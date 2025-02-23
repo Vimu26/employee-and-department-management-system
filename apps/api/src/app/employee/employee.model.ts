@@ -1,41 +1,58 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as MongooseSchema } from 'mongoose';
+import { Document } from 'mongoose';
 import {
   BaseNameSchemaContent,
   BaseAddressSchemaContent,
   BaseEntitySchemaContent,
 } from '../common/models/common.model';
+import {
+  IAddress,
+  IBaseEntity,
+  IName,
+  IEmployee,
+} from '@employee-and-department-management-system/interfaces';
+import { JOB_POSITION } from '@employee-and-department-management-system/enums';
 
-export type EmployeeDocument = Employee & Document;
+export type EmployeeModel = IEmployee & Document;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Employee {
   @Prop({ type: BaseNameSchemaContent, required: true })
-  name: Record<string, string>;
+  name: IName;
 
   @Prop({ type: BaseAddressSchemaContent, required: true })
-  address: Record<string, string>;
+  address: IAddress;
+
+  @Prop({ required: true, unique: true })
+  epf_no: string;
+
+  @Prop({ required: true, unique: true })
+  employee_id: string;
 
   @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop()
-  phone?: string;
+  @Prop({ required: true })
+  phone: string;
+
+  @Prop({ enum: JOB_POSITION, required: true, type: String })
+  position: JOB_POSITION;
 
   @Prop({ required: true })
-  jobTitle: string;
+  department_id: string;
 
-  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Department' })
-  departmentId: string;
+  // Explicit Base Entity Fields
+  @Prop({ required: true })
+  created_by: string;
 
-  @Prop({ enum: ['Active', 'Inactive'], default: 'Active' })
-  status: string;
+  @Prop({ required: true })
+  last_modified_by: string;
 
-  @Prop()
-  profilePicture?: string;
+  @Prop({ default: Date.now })
+  created_on: Date;
 
-  @Prop({ type: BaseEntitySchemaContent })
-  baseEntity: Record<string, any>;
+  @Prop({ default: Date.now })
+  last_modified_on: Date;
 }
 
-export const EmployeeSchema = SchemaFactory.createForClass(Employee);
+export const EmployeeModel = SchemaFactory.createForClass(Employee);

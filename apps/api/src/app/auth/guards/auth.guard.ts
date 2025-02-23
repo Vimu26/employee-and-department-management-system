@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AuthDatabaseService } from '../services/auth.database.service';
-import { IUserWithoutPassword } from '@employee-and-department-management-system/interfaces';
+import { IIdentity } from '@employee-and-department-management-system/interfaces';
 
 @Injectable()
 export class JwtAuthGuard implements CanActivate {
@@ -31,14 +31,14 @@ export class JwtAuthGuard implements CanActivate {
       // Decode the token
       const decoded = this.jwtService.verify(token);
 
-      const user: IUserWithoutPassword =
+      const user: IIdentity =
         await this.authDatabaseService.findById(decoded.sub);
 
       if (!user) {
         throw new UnauthorizedException('User not found');
       }
 
-      request.user = user as IUserWithoutPassword;
+      request.user = user as IIdentity;
 
       return true;
     } catch (error) {

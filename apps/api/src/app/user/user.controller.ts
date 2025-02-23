@@ -17,7 +17,7 @@ import { FilterQuery } from 'mongoose';
 import {
   IUser,
   IUserOptional,
-  IUserWithoutPassword,
+  IIdentity,
 } from '@employee-and-department-management-system/interfaces';
 import { userQueryDto } from './dto/user-query.dto';
 import * as bcrypt from 'bcrypt';
@@ -25,12 +25,15 @@ import { JwtAuthGuard } from '../auth/guards/auth.guard';
 import { LoggedIdentity } from '../common/decorators/logged-identity.decorator';
 
 @Controller('users')
+@UseGuards(JwtAuthGuard)
 export class UserController {
   constructor(private readonly userDatabaseService: UserDatabaseService) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard)
-  async createUsers(@Body() createUserDto: CreateUserDto) {
+  async createUsers(
+    @Body() createUserDto: CreateUserDto,
+    @LoggedIdentity() loggedUser: IIdentity
+  ) {
     const { password, ...userData } = createUserDto;
 
     // Hash the password
@@ -40,13 +43,13 @@ export class UserController {
     return await this.userDatabaseService.addNewDocument({
       ...userData,
       password: hashedPassword,
+      created_by: loggedUser._id?.toString(),
     });
   }
 
   @Get()
-  @UseGuards(JwtAuthGuard)
   async findAllUsers(
-    @LoggedIdentity() loggedUser: IUserWithoutPassword,
+    @LoggedIdentity() loggedUser: IIdentity,
     @Query() query: userQueryDto
   ) {
     const options = { limit: query?.size ?? 10, skip: query?.start ?? 0 };
@@ -56,16 +59,16 @@ export class UserController {
   }
 
   @Get(':id')
-  async findAUser(@Param('id') id: string) {
-    return await this.userDatabaseService.findById(id);
+  async findAUser(@Param('id') params : {id: string}) {
+    return await this.userDatabaseService.findById(params?.id);
   }
 
   @Patch(':id')
   async updateUser(
-    @Param('id') id: string,
+    @Param('id') params : {id: string},
     @Body() requestBody: UpdateUserDto
   ) {
-    const foundUser = await this.userDatabaseService.findById(id);
+    const foundUser = await this.userDatabaseService.findById(params?.id);
 
     if (!foundUser) throw new NotFoundException('NOT_FOUND');
 
@@ -78,7 +81,11 @@ export class UserController {
   }
 
   @Delete(':id')
-  async deleteUser(@Param('id') id: string) {
-    return await this.userDatabaseService.hardDelete(id);
+  async deleteUser(@Param('id') params : {id: string}) {
+    const foundUser = await this.userDatabaseService.findById(params?.id);
+
+    if (!foundUser) throw new NotFoundException('NOT_FOUND'); 
+    
+    return await this.userDatabaseService.hardDelete(params?.id);
   }
 }

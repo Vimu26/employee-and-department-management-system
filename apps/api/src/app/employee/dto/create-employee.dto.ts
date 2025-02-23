@@ -1,23 +1,38 @@
-import { IsString, IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
+import { JOB_POSITION } from "@employee-and-department-management-system/enums";
+import { IAddress, IEmployee, IName } from "@employee-and-department-management-system/interfaces";
+import { Transform, Type } from "class-transformer";
+import { IsEmail, IsEnum, IsNotEmpty, IsString, ValidateNested } from "class-validator";
 
-export class CreateEmployeeDto {
-  @IsString()
+export class CreateEmployeeDto implements IEmployee {
+  @ValidateNested()
+  @Type(() => Object)
+  name: IName;
+
+  @ValidateNested()
+  @Type(() => Object)
+  address: IAddress;
+
   @IsNotEmpty()
-  name: string;
+  @IsString()
+  epf_no: string;
+
+  @IsNotEmpty()
+  @IsString()
+  employee_id: string; //This must generate according to count of the employees
 
   @IsEmail()
   @IsNotEmpty()
+   @Transform((email) => email.value?.toLowerCase())
   email: string;
 
-  @IsString()
-  @IsOptional()
-  phone?: string;
-
-  @IsString()
   @IsNotEmpty()
-  position: string;
-
   @IsString()
+  phone: string;
+
+  @IsEnum(JOB_POSITION)
+  position: JOB_POSITION;
+
   @IsNotEmpty()
-  departmentId: string;
+  @IsString()
+  department_id: string;
 }

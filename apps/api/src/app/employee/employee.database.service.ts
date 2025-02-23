@@ -1,26 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { CreateEmployeeDto } from './dto/create-employee.dto';
-import { UpdateEmployeeDto } from './dto/update-employee.dto';
+import { DB_COLLECTION_NAMES } from '@employee-and-department-management-system/enums';
+import { IEmployee } from '@employee-and-department-management-system/interfaces';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { CommonDatabaseService } from '../common/services/common.database.service';
+import { EmployeeModel } from './employee.model';
 
 @Injectable()
-export class EmployeeService {
-  create(createEmployeeDto: CreateEmployeeDto) {
-    return 'This action adds a new employee';
-  }
-
-  findAll() {
-    return `This action returns all employee`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} employee`;
-  }
-
-  update(id: number, updateEmployeeDto: UpdateEmployeeDto) {
-    return `This action updates a #${id} employee`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} employee`;
+export class EmployeeDatabaseService extends CommonDatabaseService<IEmployee> {
+  constructor(
+    @InjectModel(DB_COLLECTION_NAMES.EMPLOYEES) private employeeModel: Model<EmployeeModel>
+  ) {
+    super(employeeModel, DB_COLLECTION_NAMES.EMPLOYEES);
   }
 }

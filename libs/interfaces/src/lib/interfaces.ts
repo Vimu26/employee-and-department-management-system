@@ -1,15 +1,19 @@
 import {
   USER_ROLES,
   ACTIVITY_ACTIONS,
+  JOB_POSITION,
 } from '@employee-and-department-management-system/enums';
 import { Types } from 'mongoose';
 
 export interface IEmployee extends IBaseEntity {
-  name: string;
+  name: IName;
+  address: IAddress;
+  epf_no:string;
+  employee_id : string;
   email: string;
   phone: string;
-  position: string;
-  departmentId: string;
+  position: JOB_POSITION;
+  department_id: string;
 }
 
 export interface IUser extends IBaseEntity {
@@ -23,10 +27,12 @@ export interface IUser extends IBaseEntity {
 
 export type IUserOptional = Partial<IUser>;
 
-export type IUserWithoutPassword = Omit<IUser, 'password'>;
+export type IEmployeeOptional = Partial<IEmployee>;
+
+export type IIdentity = Omit<IUser, 'password'>;
 
 export interface AuthResponse {
-  user: IUserWithoutPassword;
+  user: IIdentity;
   token: string;
 }
 export interface IActivityLog extends IBaseEntity {
