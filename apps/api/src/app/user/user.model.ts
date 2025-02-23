@@ -1,12 +1,19 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Schema as MongooseSchema } from 'mongoose'; // Import MongooseSchema explicitly
+import { Document } from 'mongoose';
 import {
   BaseNameSchemaContent,
   BaseAddressSchemaContent,
   BaseEntitySchemaContent,
 } from '../common/models/common.model';
+import {
+  IAddress,
+  IBaseEntity,
+  IName,
+  IUser,
+} from '@employee-and-department-management-system/interfaces';
+import { USER_ROLES } from '@employee-and-department-management-system/enums';
 
-export type UserDocument = User & Document;
+export type UserModel = IUser & Document;
 
 @Schema()
 export class User {
@@ -14,10 +21,10 @@ export class User {
   username: string;
 
   @Prop({ type: BaseNameSchemaContent, required: true })
-  name: Record<string, string>;
+  name: IName;
 
   @Prop({ type: BaseAddressSchemaContent, required: true })
-  address: Record<string, string>;
+  address: IAddress;
 
   @Prop({ required: true, unique: true })
   email: string;
@@ -25,11 +32,11 @@ export class User {
   @Prop({ required: true })
   password: string;
 
-  @Prop({ enum: ['Admin', 'HR Manager'], required: true })
-  role: 'Admin' | 'HR Manager';
+  @Prop({ enum: USER_ROLES, required: true, type: String })
+  role: USER_ROLES;
 
   @Prop({ type: BaseEntitySchemaContent })
-  baseEntity: Record<string, any>;
+  baseEntity: IBaseEntity;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

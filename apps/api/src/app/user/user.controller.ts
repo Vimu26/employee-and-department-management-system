@@ -6,37 +6,79 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
+  NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
-import { UserService } from './user.database.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserDatabaseService } from './user.database.service';
+import { FilterQuery } from 'mongoose';
+import {
+  IUser,
+  IUserOptional,
+  IUserWithoutPassword,
+} from '@employee-and-department-management-system/interfaces';
+import { userQueryDto } from './dto/user-query.dto';
+import * as bcrypt from 'bcrypt';
+import { JwtAuthGuard } from '../auth/guards/auth.guard';
+import { LoggedIdentity } from '../common/decorators/logged-identity.decorator';
 
-@Controller('user')
+@Controller('users')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userDatabaseService: UserDatabaseService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  @UseGuards(JwtAuthGuard)
+  async createUsers(@Body() createUserDto: CreateUserDto) {
+    const { password, ...userData } = createUserDto;
+
+    // Hash the password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    return await this.userDatabaseService.addNewDocument({
+      ...userData,
+      password: hashedPassword,
+    });
   }
 
   @Get()
-  findAll() {
-    return this.userService.findAll();
+  @UseGuards(JwtAuthGuard)
+  async findAllUsers(
+    @LoggedIdentity() loggedUser: IUserWithoutPassword,
+    @Query() query: userQueryDto
+  ) {
+    const options = { limit: query?.size ?? 10, skip: query?.start ?? 0 };
+    console.log(query);
+    const filters: FilterQuery<IUserOptional> = {};
+    return await this.userDatabaseService.filterDocuments(filters, options);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
+  async findAUser(@Param('id') id: string) {
+    return await this.userDatabaseService.findById(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(+id, updateUserDto);
+  async updateUser(
+    @Param('id') id: string,
+    @Body() requestBody: UpdateUserDto
+  ) {
+    const foundUser = await this.userDatabaseService.findById(id);
+
+    if (!foundUser) throw new NotFoundException('NOT_FOUND');
+
+    const updateUser: IUser = {
+      ...foundUser,
+      ...requestBody,
+    };
+
+    return await this.userDatabaseService.updateDocument(updateUser);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  async deleteUser(@Param('id') id: string) {
+    return await this.userDatabaseService.hardDelete(id);
   }
 }

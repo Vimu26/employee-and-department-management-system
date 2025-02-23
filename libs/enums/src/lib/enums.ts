@@ -9,3 +9,10 @@ export enum ACTIVITY_ACTIONS {
   UPDATED = 'Updated',
   DELETED = 'Deleted',
 }
+
+export enum DB_COLLECTION_NAMES {
+  USERS = 'users',
+  EMPLOYEES = 'employees',
+  DEPARTMENTS = 'departments',
+  ACTIVITY_LOGS = 'activity-logs',
+}
