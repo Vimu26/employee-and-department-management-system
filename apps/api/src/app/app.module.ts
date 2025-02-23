@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { EmployeeModule } from './employee/employee.module';
 import { DepartmentModule } from './department/department.module';
 import { ActivityModule } from './activity/activity.module';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import { ActivityModule } from './activity/activity.module';
     EmployeeModule,
     DepartmentModule,
     ActivityModule,
+    CommonModule,
   ],
   controllers: [AppController],
   providers: [AppService],
