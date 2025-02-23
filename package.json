@@ -2,7 +2,16 @@
   "name": "@employee-and-department-management-system/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "ng": "nx",
+    "start:web": "nx serve web",
+    "start:api": "nx serve api",
+    "start:api-dev": "nx serve api --watch",
+    "format": "prettier --check .",
+    "lint": "eslint . -c ./.eslintrc.json --ext .ts",
+    "format:fix": "prettier --write .",
+    "lint:fix": "eslint . -c ./.eslintrc.json --ext .ts --fix"
+  },
   "private": true,
   "dependencies": {
     "@angular/animations": "~19.1.0",
