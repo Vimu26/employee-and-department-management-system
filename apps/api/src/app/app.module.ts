@@ -4,6 +4,10 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
+import { AuthModule } from './auth/auth.module';
+import { EmployeeModule } from './employee/employee.module';
+import { DepartmentModule } from './department/department.module';
+import { ActivityModule } from './activity/activity.module';
 
 @Module({
   imports: [
@@ -26,6 +30,10 @@ import { HttpModule } from '@nestjs/axios';
       },
     }),
     HttpModule,
+    AuthModule,
+    EmployeeModule,
+    DepartmentModule,
+    ActivityModule,
   ],
   controllers: [AppController],
   providers: [AppService],
