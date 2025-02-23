@@ -6,40 +6,89 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  Query,
+  NotFoundException,
 } from '@nestjs/common';
-import { DepartmentService } from './department.database.service';
 import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
+import { DepartmentDatabaseService } from './department.database.service';
+import {
+  IDepartment,
+  IIdentity,
+} from '@employee-and-department-management-system/interfaces';
+import { JwtAuthGuard } from '../auth/guards/auth.guard';
+import { LoggedIdentity } from '../common/decorators/logged-identity.decorator';
+import { FilterQuery } from 'mongoose';
+import { DepartmentQueryDto } from './dto/department.query.dto';
 
-@Controller('department')
+@Controller('departments')
+@UseGuards(JwtAuthGuard)
 export class DepartmentController {
-  constructor(private readonly departmentService: DepartmentService) {}
+  constructor(
+    private readonly departmentDatabaseService: DepartmentDatabaseService
+  ) {}
 
   @Post()
-  create(@Body() createDepartmentDto: CreateDepartmentDto) {
-    return this.departmentService.create(createDepartmentDto);
+  async createDepartment(
+    @Body() requestBody: CreateDepartmentDto,
+    @LoggedIdentity() loggedUser: IIdentity
+  ): Promise<IDepartment> {
+    return this.departmentDatabaseService.addNewDocument({
+      ...requestBody,
+      created_by: loggedUser._id?.toString(),
+    });
   }
 
   @Get()
-  findAll() {
-    return this.departmentService.findAll();
+  async findAllDepartments(
+    @LoggedIdentity() loggedUser: IIdentity,
+    @Query() query: DepartmentQueryDto
+  ): Promise<IDepartment[]> {
+    const options = { limit: query?.size ?? 10, skip: query?.start ?? 0 };
+    const filters: FilterQuery<IDepartment> = {};
+    return await this.departmentDatabaseService.filterDocuments(
+      filters,
+      options
+    );
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.departmentService.findOne(+id);
+  async getDepartment(
+    @Param('id') params: { id: string }
+  ): Promise<IDepartment | null> {
+    return this.departmentDatabaseService.findById(params?.id);
   }
 
   @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateDepartmentDto: UpdateDepartmentDto
-  ) {
-    return this.departmentService.update(+id, updateDepartmentDto);
+  async updateDepartment(
+    @Param('id') params: { id: string },
+    @Body() requestBody: UpdateDepartmentDto
+  ): Promise<IDepartment | null> {
+    const foundDepartment = await this.departmentDatabaseService.findById(
+      params?.id
+    );
+
+    if (!foundDepartment) throw new NotFoundException('NOT_FOUND');
+
+    const updatedDepartment: IDepartment = {
+      ...foundDepartment,
+      ...requestBody,
+    };
+
+    return this.departmentDatabaseService.updateDocument(updatedDepartment);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.departmentService.remove(+id);
+  async deleteDepartment(
+    @Param('id') params: { id: string }
+  ): Promise<IDepartment | null> {
+    const foundDepartment = await this.departmentDatabaseService.findById(
+      params?.id
+    );
+
+    if (!foundDepartment) throw new NotFoundException('NOT_FOUND');
+
+    return await this.departmentDatabaseService.hardDelete(params?.id);
   }
 }

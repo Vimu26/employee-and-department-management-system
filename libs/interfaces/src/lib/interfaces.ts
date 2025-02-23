@@ -2,6 +2,7 @@ import {
   USER_ROLES,
   ACTIVITY_ACTIONS,
   JOB_POSITION,
+  DEPARTMENT_TYPE,
 } from '@employee-and-department-management-system/enums';
 import { Types } from 'mongoose';
 
@@ -47,7 +48,8 @@ export interface ILoggedUser {
 
 export interface IDepartment extends IBaseEntity {
   name: string;
-  description: string;
+  type : DEPARTMENT_TYPE;
+  description?: string;
 }
 
 export interface IBaseEntity {

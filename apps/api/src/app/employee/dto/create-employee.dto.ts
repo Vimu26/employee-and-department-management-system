@@ -30,6 +30,7 @@ export class CreateEmployeeDto implements IEmployee {
   phone: string;
 
   @IsEnum(JOB_POSITION)
+  @IsNotEmpty()
   position: JOB_POSITION;
 
   @IsNotEmpty()

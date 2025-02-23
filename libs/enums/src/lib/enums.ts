@@ -33,3 +33,14 @@ export enum JOB_POSITION {
   TRAINEE_HR = "Trainee HR",
   TRAINEE_SE = "Trainee SE",
 }
+
+
+export enum DEPARTMENT_TYPE {
+  ENGINEERING = 'ENGINEERING',
+  HR = 'HR',
+  FINANCE = 'FINANCE',
+  SALES = 'SALES',
+  MARKETING = 'MARKETING',
+  SUPPORT = 'SUPPORT',
+}
+

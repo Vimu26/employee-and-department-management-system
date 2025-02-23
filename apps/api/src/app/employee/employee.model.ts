@@ -1,5 +1,5 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import { Document, Types } from 'mongoose';
 import {
   BaseNameSchemaContent,
   BaseAddressSchemaContent,
@@ -38,7 +38,7 @@ export class Employee {
   @Prop({ enum: JOB_POSITION, required: true, type: String })
   position: JOB_POSITION;
 
-  @Prop({ required: true })
+  @Prop({ type: String, ref: 'Department', required: true })
   department_id: string;
 
   // Explicit Base Entity Fields
