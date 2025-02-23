@@ -9,6 +9,7 @@ import { EmployeeModule } from './employee/employee.module';
 import { DepartmentModule } from './department/department.module';
 import { ActivityModule } from './activity/activity.module';
 import { CommonModule } from './common/common.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { CommonModule } from './common/common.module';
     DepartmentModule,
     ActivityModule,
     CommonModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

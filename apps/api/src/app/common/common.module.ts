@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { CommonService } from './services/common.databse.service';
+import { CommonService } from './services/common.database.service';
 import { CommonController } from './controllers/common.controller';
 
 @Module({
