@@ -15,6 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@employee-and-department-management-system/dtos": [
+        "libs/dtos/src/index.ts"
+      ],
       "@employee-and-department-management-system/enums": [
         "libs/enums/src/index.ts"
       ],
