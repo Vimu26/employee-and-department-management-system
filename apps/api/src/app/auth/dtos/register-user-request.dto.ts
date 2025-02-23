@@ -1,19 +1,21 @@
+// src/auth/dto/create-user.dto.ts
+
 import {
   IsString,
   IsEmail,
   IsNotEmpty,
   IsEnum,
   ValidateNested,
+  MinLength,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import { USER_ROLES } from '@employee-and-department-management-system/enums';
 import {
   IName,
   IAddress,
-  IUser,
 } from '@employee-and-department-management-system/interfaces';
 
-export class CreateUserDto implements IUser {
+export class RegisterUserDto {
   @IsString()
   @IsNotEmpty()
   username: string;
@@ -24,6 +26,7 @@ export class CreateUserDto implements IUser {
   email: string;
 
   @IsString()
+  @MinLength(6, { message: 'Password should be at least 6 characters long' })
   @IsNotEmpty()
   password: string;
 

@@ -8,6 +8,7 @@ import {
   Delete,
   Query,
   NotFoundException,
+  UseGuards,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -16,15 +17,19 @@ import { FilterQuery } from 'mongoose';
 import {
   IUser,
   IUserOptional,
+  IUserWithoutPassword,
 } from '@employee-and-department-management-system/interfaces';
 import { userQueryDto } from './dto/user-query.dto';
 import * as bcrypt from 'bcrypt';
+import { JwtAuthGuard } from '../auth/guards/auth.guard';
+import { LoggedIdentity } from '../common/decorators/logged-identity.decorator';
 
 @Controller('users')
 export class UserController {
   constructor(private readonly userDatabaseService: UserDatabaseService) {}
 
   @Post()
+  @UseGuards(JwtAuthGuard)
   async createUsers(@Body() createUserDto: CreateUserDto) {
     const { password, ...userData } = createUserDto;
 
@@ -39,7 +44,11 @@ export class UserController {
   }
 
   @Get()
-  async findAllUsers(@Query() query: userQueryDto) {
+  @UseGuards(JwtAuthGuard)
+  async findAllUsers(
+    @LoggedIdentity() loggedUser: IUserWithoutPassword,
+    @Query() query: userQueryDto
+  ) {
     const options = { limit: query?.size ?? 10, skip: query?.start ?? 0 };
     console.log(query);
     const filters: FilterQuery<IUserOptional> = {};
@@ -52,7 +61,10 @@ export class UserController {
   }
 
   @Patch(':id')
-  async updateUser(@Param('id') id: string, @Body() requestBody: UpdateUserDto) {
+  async updateUser(
+    @Param('id') id: string,
+    @Body() requestBody: UpdateUserDto
+  ) {
     const foundUser = await this.userDatabaseService.findById(id);
 
     if (!foundUser) throw new NotFoundException('NOT_FOUND');

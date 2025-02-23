@@ -23,9 +23,20 @@ export interface IUser extends IBaseEntity {
 
 export type IUserOptional = Partial<IUser>;
 
+export type IUserWithoutPassword = Omit<IUser, 'password'>;
+
+export interface AuthResponse {
+  user: IUserWithoutPassword;
+  token: string;
+}
 export interface IActivityLog extends IBaseEntity {
   employee_id: string;
   action: ACTIVITY_ACTIONS;
+}
+
+export interface ILoggedUser {
+  user_id: string | Types.ObjectId;
+  token: string;
 }
 
 export interface IDepartment extends IBaseEntity {

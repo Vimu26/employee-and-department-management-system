@@ -16,4 +16,3 @@ export enum DB_COLLECTION_NAMES {
   DEPARTMENTS = 'departments',
   ACTIVITY_LOGS = 'activity-logs',
 }
-

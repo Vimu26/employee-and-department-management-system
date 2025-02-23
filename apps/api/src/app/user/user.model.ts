@@ -1,11 +1,16 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose'; 
+import { Document } from 'mongoose';
 import {
   BaseNameSchemaContent,
   BaseAddressSchemaContent,
   BaseEntitySchemaContent,
 } from '../common/models/common.model';
-import { IAddress, IBaseEntity, IName, IUser } from '@employee-and-department-management-system/interfaces';
+import {
+  IAddress,
+  IBaseEntity,
+  IName,
+  IUser,
+} from '@employee-and-department-management-system/interfaces';
 import { USER_ROLES } from '@employee-and-department-management-system/enums';
 
 export type UserModel = IUser & Document;

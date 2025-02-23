@@ -44,15 +44,14 @@ export abstract class CommonDatabaseService<T extends IBaseEntity> {
     filter: FilterQuery<T> = {},
     options: QueryOptions<T> = {}
   ): Promise<T[]> {
-
     const { limit = 10, skip = 0 } = options;
-  
+
     return this.mongooseModel
-    .find(filter, {}, { lean: true, ...options })
-    .sort({ created_on: 'desc' }) 
-    .skip(skip)  
-    .limit(limit) 
-    .exec();
+      .find(filter, {}, { lean: true, ...options })
+      .sort({ created_on: 'desc' })
+      .skip(skip)
+      .limit(limit)
+      .exec();
   }
   async findDocument(
     filter: FilterQuery<T> = {},

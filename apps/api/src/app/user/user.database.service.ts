@@ -9,8 +9,8 @@ import { UserModel } from './user.model';
 @Injectable()
 export class UserDatabaseService extends CommonDatabaseService<IUser> {
   constructor(
-    @InjectModel(DB_COLLECTION_NAMES.USERS) private userModel: Model<UserModel>, 
+    @InjectModel(DB_COLLECTION_NAMES.USERS) private userModel: Model<UserModel>
   ) {
-    super(userModel, DB_COLLECTION_NAMES.USERS);  
+    super(userModel, DB_COLLECTION_NAMES.USERS);
   }
 }
