@@ -31,8 +31,9 @@ export class JwtAuthGuard implements CanActivate {
       // Decode the token
       const decoded = this.jwtService.verify(token);
 
-      const user: IIdentity =
-        await this.authDatabaseService.findById(decoded.sub);
+      const user: IIdentity = await this.authDatabaseService.findById(
+        decoded.sub
+      );
 
       if (!user) {
         throw new UnauthorizedException('User not found');

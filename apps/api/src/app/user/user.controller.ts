@@ -59,13 +59,13 @@ export class UserController {
   }
 
   @Get(':id')
-  async findAUser(@Param('id') params : {id: string}) {
+  async findAUser(@Param('id') params: { id: string }) {
     return await this.userDatabaseService.findById(params?.id);
   }
 
   @Patch(':id')
   async updateUser(
-    @Param('id') params : {id: string},
+    @Param('id') params: { id: string },
     @Body() requestBody: UpdateUserDto
   ) {
     const foundUser = await this.userDatabaseService.findById(params?.id);
@@ -81,11 +81,11 @@ export class UserController {
   }
 
   @Delete(':id')
-  async deleteUser(@Param('id') params : {id: string}) {
+  async deleteUser(@Param('id') params: { id: string }) {
     const foundUser = await this.userDatabaseService.findById(params?.id);
 
-    if (!foundUser) throw new NotFoundException('NOT_FOUND'); 
-    
+    if (!foundUser) throw new NotFoundException('NOT_FOUND');
+
     return await this.userDatabaseService.hardDelete(params?.id);
   }
 }

@@ -9,8 +9,8 @@ import { Types } from 'mongoose';
 export interface IEmployee extends IBaseEntity {
   name: IName;
   address: IAddress;
-  epf_no:string;
-  employee_id : string;
+  epf_no: string;
+  employee_id: string;
   email: string;
   phone: string;
   position: JOB_POSITION;
@@ -41,6 +41,8 @@ export interface IActivityLog extends IBaseEntity {
   action: ACTIVITY_ACTIONS;
 }
 
+export type IOptionalActivityLogs = Partial<IActivityLog>;
+
 export interface ILoggedUser {
   user_id: string | Types.ObjectId;
   token: string;
@@ -48,7 +50,7 @@ export interface ILoggedUser {
 
 export interface IDepartment extends IBaseEntity {
   name: string;
-  type : DEPARTMENT_TYPE;
+  type: DEPARTMENT_TYPE;
   description?: string;
 }
 

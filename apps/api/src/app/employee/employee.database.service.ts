@@ -9,7 +9,8 @@ import { EmployeeModel } from './employee.model';
 @Injectable()
 export class EmployeeDatabaseService extends CommonDatabaseService<IEmployee> {
   constructor(
-    @InjectModel(DB_COLLECTION_NAMES.EMPLOYEES) private employeeModel: Model<EmployeeModel>
+    @InjectModel(DB_COLLECTION_NAMES.EMPLOYEES)
+    private employeeModel: Model<EmployeeModel>
   ) {
     super(employeeModel, DB_COLLECTION_NAMES.EMPLOYEES);
   }

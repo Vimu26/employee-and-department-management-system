@@ -3,43 +3,72 @@ import {
   Get,
   Post,
   Body,
-  Patch,
   Param,
+  Query,
+  NotFoundException,
   Delete,
 } from '@nestjs/common';
-import { ActivityService } from './activity.database.service';
+import { IActivityLog } from '@employee-and-department-management-system/interfaces';
+import { ActivityDatabaseService } from './activity.database.service';
 import { CreateActivityDto } from './dto/create-activity.dto';
-import { UpdateActivityDto } from './dto/update-activity.dto';
+import { ActivityLogQueryDto } from './dto/activity.query.dto';
 
-@Controller('activity')
-export class ActivityController {
-  constructor(private readonly activityService: ActivityService) {}
+@Controller('activity-logs')
+export class ActivityLogController {
+  constructor(
+    private readonly activityLogDatabaseService: ActivityDatabaseService
+  ) {}
 
   @Post()
-  create(@Body() createActivityDto: CreateActivityDto) {
-    return this.activityService.create(createActivityDto);
+  async createActivityLog(
+    @Body() activityLogData: CreateActivityDto
+  ): Promise<IActivityLog> {
+    return this.activityLogDatabaseService.createLog(activityLogData);
   }
 
   @Get()
-  findAll() {
-    return this.activityService.findAll();
+  async findActivityLogs(
+    @Query() query: ActivityLogQueryDto
+  ): Promise<IActivityLog[]> {
+    const filters = {
+      employeeId: query.employee_id,
+      action: query.action,
+    };
+
+    const options = {
+      limit: query.limit ?? 10,
+      skip: query.skip ?? 0,
+    };
+
+    return this.activityLogDatabaseService.filterLogs(
+      filters,
+      options.limit,
+      options.skip
+    );
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.activityService.findOne(+id);
-  }
+  async getActivityLog(@Param('id') id: string): Promise<IActivityLog | null> {
+    const activityLog = await this.activityLogDatabaseService.findById(id);
 
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateActivityDto: UpdateActivityDto
-  ) {
-    return this.activityService.update(+id, updateActivityDto);
+    if (!activityLog) throw new NotFoundException('ActivityLog not found');
+
+    return activityLog;
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.activityService.remove(+id);
+  async deleteActivityLog(@Param('id') id: string): Promise<void> {
+    const result = await this.activityLogDatabaseService.deleteActivityLog(id);
+    if (!result) {
+      throw new NotFoundException('ActivityLog not found');
+    }
+  }
+
+  @Get('count')
+  async getActivityLogsCount(
+    @Query() query: ActivityLogQueryDto
+  ): Promise<{ count: number }> {
+    const count = await this.activityLogDatabaseService.getEntriesCount();
+    return { count };
   }
 }

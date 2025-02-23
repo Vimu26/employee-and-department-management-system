@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { DepartmentController } from './department.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { DepartmentModel,  } from './department.model';
+import { DepartmentModel } from './department.model';
 import { DB_COLLECTION_NAMES } from '@employee-and-department-management-system/enums';
 import { DepartmentDatabaseService } from './department.database.service';
 

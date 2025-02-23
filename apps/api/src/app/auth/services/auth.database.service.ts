@@ -44,7 +44,10 @@ export class AuthDatabaseService {
     return userWithoutPassword;
   }
 
-  async registerUser(data: CreateUserDto,loggedIdentity : IIdentity): Promise<IIdentity> {
+  async registerUser(
+    data: CreateUserDto,
+    loggedIdentity: IIdentity
+  ): Promise<IIdentity> {
     const { name, email, password, role, address, username } = data;
 
     // Check if the email is already in use
@@ -72,7 +75,7 @@ export class AuthDatabaseService {
       password: hashedPassword,
       role,
       address,
-      created_by : loggedIdentity?._id?.toString()
+      created_by: loggedIdentity?._id?.toString(),
     });
 
     // Save the user to the database
