@@ -15,6 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@employee-and-department-management-system/directives": [
+        "libs/directives/src/index.ts"
+      ],
       "@employee-and-department-management-system/dtos": [
         "libs/dtos/src/index.ts"
       ],
@@ -26,6 +29,9 @@
       ],
       "@employee-and-department-management-system/lib": [
         "libs/lib/src/index.ts"
+      ],
+      "@employee-and-department-management-system/pipes": [
+        "libs/pipes/src/index.ts"
       ]
     }
   },
