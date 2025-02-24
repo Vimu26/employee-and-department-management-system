@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-loading',
   imports: [CommonModule],
-  standalone:true,
+  standalone: true,
   templateUrl: './loading.component.html',
   styleUrl: './loading.component.scss',
 })

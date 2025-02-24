@@ -62,7 +62,7 @@ export class EmployeeController {
   async updateEmployee(
     @Param('id') params: { id: string },
     @Body() requestBody: UpdateEmployeeDto,
-    @LoggedIdentity() loggedUser: IIdentity,
+    @LoggedIdentity() loggedUser: IIdentity
   ): Promise<IEmployee | null> {
     const foundEmployee = await this.employeeDatabaseService.findById(
       params?.id
@@ -75,7 +75,7 @@ export class EmployeeController {
       ...requestBody,
     };
 
-    return this.employeeDatabaseService.updateDocument(updatedEmployee,{
+    return this.employeeDatabaseService.updateDocument(updatedEmployee, {
       created_by: loggedUser._id?.toString(),
     });
   }
@@ -83,13 +83,13 @@ export class EmployeeController {
   @Delete(':id')
   async deleteEmployee(
     @Param('id') params: { id: string },
-    @LoggedIdentity() loggedUser: IIdentity,
+    @LoggedIdentity() loggedUser: IIdentity
   ): Promise<IEmployee | null> {
     const foundUser = await this.employeeDatabaseService.findById(params?.id);
 
     if (!foundUser) throw new NotFoundException('NOT_FOUND');
 
-    return await this.employeeDatabaseService.hardDelete(params?.id,{
+    return await this.employeeDatabaseService.hardDelete(params?.id, {
       created_by: loggedUser._id?.toString(),
     });
   }

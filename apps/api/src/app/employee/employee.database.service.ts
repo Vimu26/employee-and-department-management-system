@@ -14,6 +14,10 @@ export class EmployeeDatabaseService extends CommonDatabaseService<IEmployee> {
     private employeeModel: Model<EmployeeModel>,
     activityLogsDatabaseService: ActivityDatabaseService
   ) {
-    super(activityLogsDatabaseService,employeeModel, DB_COLLECTION_NAMES.EMPLOYEES);
+    super(
+      activityLogsDatabaseService,
+      employeeModel,
+      DB_COLLECTION_NAMES.EMPLOYEES
+    );
   }
 }

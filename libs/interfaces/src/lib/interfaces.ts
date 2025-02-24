@@ -15,7 +15,7 @@ export interface IEmployee extends IBaseEntity {
   nic: string;
   employee_id: string;
   profile_pic?: string;
-  status : EMPLOYEE_STATUS;
+  status: EMPLOYEE_STATUS;
   email: string;
   phone: string;
   position: JOB_POSITION;
@@ -29,7 +29,7 @@ export interface IUser extends IBaseEntity {
   role: USER_ROLES;
   name: IName;
   address: IAddress;
-  profile_pic? : string //url of the profile picture
+  profile_pic?: string; //url of the profile picture
 }
 
 export type IUserOptional = Partial<IUser>;
