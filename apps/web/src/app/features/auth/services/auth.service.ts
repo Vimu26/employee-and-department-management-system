@@ -30,16 +30,9 @@ export class AuthService {
   isTokenExpired(): boolean {
     const token = this.getToken();
     if (token) {
-      try {
-        const payload = JSON.parse(
-          Buffer.from(token.split('.')[1], 'base64').toString()
-        );
-        const expirationTime = payload.exp * 1000;
-        return Date.now() >= expirationTime;
-      } catch (error) {
-        console.error('Invalid token:', error);
-        return true;
-      }
+      const tokenData = JSON.parse(atob(token.split('.')[1]));
+      const expirationTime = tokenData.exp * 1000;
+      return Date.now() >= expirationTime;
     }
     return true;
   }
