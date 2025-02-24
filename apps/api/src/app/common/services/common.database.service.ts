@@ -89,7 +89,6 @@ export abstract class CommonDatabaseService<T extends IBaseEntity> {
     filter: FilterQuery<T> = {},
     options: QueryOptions<T> = {}
   ): Promise<T[]> {
-
     return this.mongooseModel
       .find(filter, {}, { lean: true, ...options })
       .sort({ created_on: 'desc' })
@@ -101,16 +100,16 @@ export abstract class CommonDatabaseService<T extends IBaseEntity> {
     options: QueryOptions<T> = {}
   ): Promise<{ total: number; data: T[] }> {
     const { limit = 10, skip = 0 } = options;
-  
+
     const total = await this.mongooseModel.countDocuments(filter).exec();
-  
+
     const data = await this.mongooseModel
       .find(filter, {}, { lean: true, ...options })
       .sort({ created_on: 'desc' })
       .skip(skip)
       .limit(limit)
       .exec();
-  
+
     return { total, data };
   }
 
