@@ -36,10 +36,10 @@ export class User {
   role: USER_ROLES;
 
   // Explicit Base Entity Fields
-  @Prop({ required: true })
+  @Prop()
   created_by: string;
 
-  @Prop({ required: true })
+  @Prop()
   last_modified_by: string;
 
   @Prop({ default: Date.now })

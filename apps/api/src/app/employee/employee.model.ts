@@ -1,13 +1,11 @@
 import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Types } from 'mongoose';
+import { Document } from 'mongoose';
 import {
   BaseNameSchemaContent,
   BaseAddressSchemaContent,
-  BaseEntitySchemaContent,
 } from '../common/models/common.model';
 import {
   IAddress,
-  IBaseEntity,
   IName,
   IEmployee,
 } from '@employee-and-department-management-system/interfaces';
@@ -27,6 +25,9 @@ export class Employee {
   epf_no: string;
 
   @Prop({ required: true, unique: true })
+  nic: string;
+
+  @Prop({ required: true, unique: true })
   employee_id: string;
 
   @Prop({ required: true, unique: true })
@@ -42,10 +43,10 @@ export class Employee {
   department_id: string;
 
   // Explicit Base Entity Fields
-  @Prop({ required: true })
+  @Prop()
   created_by: string;
 
-  @Prop({ required: true })
+  @Prop()
   last_modified_by: string;
 
   @Prop({ default: Date.now })

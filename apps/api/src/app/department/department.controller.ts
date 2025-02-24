@@ -34,10 +34,15 @@ export class DepartmentController {
     @Body() requestBody: CreateDepartmentDto,
     @LoggedIdentity() loggedUser: IIdentity
   ): Promise<IDepartment> {
-    return this.departmentDatabaseService.addNewDocument({
-      ...requestBody,
-      created_by: loggedUser._id?.toString(),
-    });
+    return this.departmentDatabaseService.addNewDocument(
+      {
+        ...requestBody,
+        created_by: loggedUser._id?.toString(),
+      },
+      {
+        created_by: loggedUser._id?.toString(),
+      }
+    );
   }
 
   @Get()
@@ -63,7 +68,8 @@ export class DepartmentController {
   @Patch(':id')
   async updateDepartment(
     @Param('id') params: { id: string },
-    @Body() requestBody: UpdateDepartmentDto
+    @Body() requestBody: UpdateDepartmentDto,
+    @LoggedIdentity() loggedUser: IIdentity
   ): Promise<IDepartment | null> {
     const foundDepartment = await this.departmentDatabaseService.findById(
       params?.id
@@ -76,12 +82,15 @@ export class DepartmentController {
       ...requestBody,
     };
 
-    return this.departmentDatabaseService.updateDocument(updatedDepartment);
+    return this.departmentDatabaseService.updateDocument(updatedDepartment, {
+      created_by: loggedUser._id?.toString(),
+    });
   }
 
   @Delete(':id')
   async deleteDepartment(
-    @Param('id') params: { id: string }
+    @Param('id') params: { id: string },
+    @LoggedIdentity() loggedUser: IIdentity
   ): Promise<IDepartment | null> {
     const foundDepartment = await this.departmentDatabaseService.findById(
       params?.id
@@ -89,6 +98,8 @@ export class DepartmentController {
 
     if (!foundDepartment) throw new NotFoundException('NOT_FOUND');
 
-    return await this.departmentDatabaseService.hardDelete(params?.id);
+    return await this.departmentDatabaseService.hardDelete(params?.id, {
+      created_by: loggedUser._id?.toString(),
+    });
   }
 }

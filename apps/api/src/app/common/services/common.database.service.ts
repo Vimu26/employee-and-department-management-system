@@ -6,53 +6,114 @@ import {
   QueryOptions,
   Types,
 } from 'mongoose';
-import { IBaseEntity } from '@employee-and-department-management-system/interfaces';
-import { DB_COLLECTION_NAMES } from '@employee-and-department-management-system/enums';
+import {
+  IActivityLog,
+  IBaseEntity,
+} from '@employee-and-department-management-system/interfaces';
+import {
+  ACTIVITY_ACTIONS,
+  DB_COLLECTION_NAMES,
+} from '@employee-and-department-management-system/enums';
+import { ActivityDatabaseService } from '../../activity/activity.database.service';
 
 export abstract class CommonDatabaseService<T extends IBaseEntity> {
   constructor(
+    public logsDatabaseService: ActivityDatabaseService,
     protected mongooseModel: Model<T & Document>,
     protected model: DB_COLLECTION_NAMES
   ) {}
 
   async addNewDocument(
     doc: T,
+    logParams: Partial<IActivityLog>,
     populate: string | PopulateOptions | (string | PopulateOptions)[] = []
   ): Promise<T> {
     const newDoc = await this.mongooseModel.create({ ...doc });
     await newDoc.populate(populate);
-    return newDoc.toObject() as T;
+    const createdDoc = newDoc.toObject() as T;
+
+    const newLog: IActivityLog = {
+      action: ACTIVITY_ACTIONS.CREATED,
+      created_by: logParams.created_by,
+      created_on: new Date(),
+      model: this.model,
+      parent_id: createdDoc._id,
+    };
+
+    await this.logsDatabaseService.createLog(newLog);
+
+    return createdDoc;
   }
 
   async updateDocument(
     doc: T,
+    logParams: Partial<IActivityLog>,
     populate: string | PopulateOptions | (string | PopulateOptions)[] = [],
     filter: FilterQuery<T> = { _id: doc._id }
-  ): Promise<T> {
+  ): Promise<T | null> {
+    if (!doc || !('_id' in doc)) {
+      throw new Error('Document must have an _id for updating');
+    }
+
+    const newDoc: T = {
+      ...doc,
+      last_modified_on: new Date(),
+      last_modified_by:
+        logParams?.last_modified_by ??
+        ('last_modified_by' in doc ? doc.last_modified_by : null),
+    };
+
+    const oldDocOnDb = await this.mongooseModel.findOne(filter).exec();
+
     const newDocOnDb = await this.mongooseModel
-      .findOneAndUpdate(
-        filter,
-        { ...doc, last_modified_on: new Date() },
-        { new: true }
-      )
+      .findOneAndUpdate(filter, newDoc, { new: true })
       .exec();
 
-    return newDocOnDb ? (await newDocOnDb.populate(populate)).toObject() : null;
+    if (!newDocOnDb) return null;
+
+    if (oldDocOnDb) {
+      const newLog: IActivityLog = {
+        action: ACTIVITY_ACTIONS.UPDATED,
+        created_by: logParams.created_by,
+        created_on: new Date(),
+        model: this.model,
+        parent_id: doc._id,
+      };
+      await this.logsDatabaseService.createLog(newLog);
+    }
+
+    return (await newDocOnDb.populate(populate)).toObject();
   }
 
   async filterDocuments(
     filter: FilterQuery<T> = {},
     options: QueryOptions<T> = {}
   ): Promise<T[]> {
-    const { limit = 10, skip = 0 } = options;
 
     return this.mongooseModel
+      .find(filter, {}, { lean: true, ...options })
+      .sort({ created_on: 'desc' })
+      .exec();
+  }
+
+  async filterPaginatedDocumentsWithCount(
+    filter: FilterQuery<T> = {},
+    options: QueryOptions<T> = {}
+  ): Promise<{ total: number; data: T[] }> {
+    const { limit = 10, skip = 0 } = options;
+  
+    const total = await this.mongooseModel.countDocuments(filter).exec();
+  
+    const data = await this.mongooseModel
       .find(filter, {}, { lean: true, ...options })
       .sort({ created_on: 'desc' })
       .skip(skip)
       .limit(limit)
       .exec();
+  
+    return { total, data };
   }
+
   async findDocument(
     filter: FilterQuery<T> = {},
     options: QueryOptions<T> = {}
@@ -68,11 +129,27 @@ export abstract class CommonDatabaseService<T extends IBaseEntity> {
     )?.toObject() as T | null;
   }
 
-  async hardDelete(id: Types.ObjectId | string): Promise<T | null> {
+  async hardDelete(
+    id: Types.ObjectId | string,
+    logParams: Partial<IActivityLog>
+  ): Promise<T | null> {
+    const doc_id = new Types.ObjectId(id);
     const doc = (
-      await this.mongooseModel.findByIdAndDelete(id)?.exec()
+      await this.mongooseModel.findByIdAndDelete(doc_id)?.exec()
     )?.toObject();
-    return doc as T | null;
+
+    if (!doc) return null;
+
+    const newLog: IActivityLog = {
+      action: ACTIVITY_ACTIONS.UPDATED,
+      created_by: logParams.created_by,
+      created_on: new Date(),
+      model: this.model,
+      parent_id: doc._id,
+    };
+    await this.logsDatabaseService.createLog(newLog);
+
+    return doc as T;
   }
 
   async getEntriesCount(): Promise<number> {
