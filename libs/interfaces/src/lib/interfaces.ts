@@ -4,15 +4,18 @@ import {
   JOB_POSITION,
   DEPARTMENT_TYPE,
   DB_COLLECTION_NAMES,
+  EMPLOYEE_STATUS,
 } from '@employee-and-department-management-system/enums';
 import { Types } from 'mongoose';
 
 export interface IEmployee extends IBaseEntity {
   name: IName;
   address: IAddress;
-  epf_no: string;
+  epf_no?: string;
   nic: string;
   employee_id: string;
+  profile_pic?: string;
+  status : EMPLOYEE_STATUS;
   email: string;
   phone: string;
   position: JOB_POSITION;

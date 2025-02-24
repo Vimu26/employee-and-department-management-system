@@ -9,7 +9,10 @@ import {
   IName,
   IEmployee,
 } from '@employee-and-department-management-system/interfaces';
-import { JOB_POSITION } from '@employee-and-department-management-system/enums';
+import {
+  EMPLOYEE_STATUS,
+  JOB_POSITION,
+} from '@employee-and-department-management-system/enums';
 
 export type EmployeeModel = IEmployee & Document;
 
@@ -21,7 +24,7 @@ export class Employee {
   @Prop({ type: BaseAddressSchemaContent, required: true })
   address: IAddress;
 
-  @Prop({ required: true, unique: true })
+  @Prop()
   epf_no: string;
 
   @Prop({ required: true, unique: true })
@@ -29,6 +32,12 @@ export class Employee {
 
   @Prop({ required: true, unique: true })
   employee_id: string;
+
+  @Prop({ enum: EMPLOYEE_STATUS, required: true, type: String })
+  status: EMPLOYEE_STATUS;
+
+  @Prop()
+  profile_pic: string; //url of the image
 
   @Prop({ required: true, unique: true })
   email: string;
