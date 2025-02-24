@@ -1,9 +1,9 @@
-import { IUserWithoutPassword } from '@employee-and-department-management-system/interfaces';
+import { IIdentity } from '@employee-and-department-management-system/interfaces';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
 export const LoggedIdentity = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext): IUserWithoutPassword | null => {
+  (data: unknown, ctx: ExecutionContext): IIdentity | null => {
     const request = ctx.switchToHttp().getRequest();
-    return (request.user as IUserWithoutPassword) || null;
+    return (request.user as IIdentity) || null;
   }
 );

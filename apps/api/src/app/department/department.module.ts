@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
-import { DepartmentService } from './department.database.service';
 import { DepartmentController } from './department.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Department, DepartmentSchema } from './department.model';
+import { DepartmentModel } from './department.model';
+import { DB_COLLECTION_NAMES } from '@employee-and-department-management-system/enums';
+import { DepartmentDatabaseService } from './department.database.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: Department.name, schema: DepartmentSchema },
+      { name: DB_COLLECTION_NAMES.DEPARTMENTS, schema: DepartmentModel },
     ]),
   ],
   controllers: [DepartmentController],
-  providers: [DepartmentService],
+  providers: [DepartmentDatabaseService],
 })
 export class DepartmentModule {}

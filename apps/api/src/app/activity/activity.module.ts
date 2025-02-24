@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
-import { ActivityService } from './activity.database.service';
-import { ActivityController } from './activity.controller';
+import { ActivityDatabaseService } from './activity.database.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ActivityLog, ActivityLogSchema } from './activity.model';
+import { DB_COLLECTION_NAMES } from '@employee-and-department-management-system/enums';
+import { ActivityLogModel } from './activity.model';
+import { ActivityLogController } from './activity.controller';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: ActivityLog.name, schema: ActivityLogSchema },
+      { name: DB_COLLECTION_NAMES.ACTIVITY_LOGS, schema: ActivityLogModel },
     ]),
   ],
-  controllers: [ActivityController],
-  providers: [ActivityService],
+  controllers: [ActivityLogController],
+  providers: [ActivityDatabaseService],
 })
 export class ActivityModule {}

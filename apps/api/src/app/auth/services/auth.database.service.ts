@@ -9,7 +9,7 @@ import { FilterQuery, Model } from 'mongoose';
 import {
   AuthResponse,
   IUserOptional,
-  IUserWithoutPassword,
+  IIdentity,
 } from '@employee-and-department-management-system/interfaces';
 import { UserModel } from '../../user/user.model';
 import { DB_COLLECTION_NAMES } from '@employee-and-department-management-system/enums';
@@ -36,7 +36,7 @@ export class AuthDatabaseService {
     return await this.usersModel.find(filters);
   }
 
-  async findById(id: string): Promise<IUserWithoutPassword> {
+  async findById(id: string): Promise<IIdentity> {
     const user = await this.usersModel.findById(id);
     const { password: _, ...userWithoutPassword } = user.toObject();
 
@@ -44,7 +44,10 @@ export class AuthDatabaseService {
     return userWithoutPassword;
   }
 
-  async registerUser(data: CreateUserDto): Promise<IUserWithoutPassword> {
+  async registerUser(
+    data: CreateUserDto,
+    loggedIdentity: IIdentity
+  ): Promise<IIdentity> {
     const { name, email, password, role, address, username } = data;
 
     // Check if the email is already in use
@@ -72,6 +75,7 @@ export class AuthDatabaseService {
       password: hashedPassword,
       role,
       address,
+      created_by: loggedIdentity?._id?.toString(),
     });
 
     // Save the user to the database

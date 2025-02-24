@@ -1,11 +1,19 @@
-import { IsString, IsNotEmpty } from 'class-validator';
+import {
+  DEPARTMENT_TYPE,
+  JOB_POSITION,
+} from '@employee-and-department-management-system/enums';
+import { IDepartment } from '@employee-and-department-management-system/interfaces';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
-export class CreateDepartmentDto {
+export class CreateDepartmentDto implements IDepartment {
   @IsString()
   @IsNotEmpty()
   name: string;
 
-  @IsString()
+  @IsEnum(DEPARTMENT_TYPE)
   @IsNotEmpty()
-  description: string;
+  type: DEPARTMENT_TYPE;
+
+  @IsString()
+  description?: string;
 }

@@ -1,26 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { CreateDepartmentDto } from './dto/create-department.dto';
-import { UpdateDepartmentDto } from './dto/update-department.dto';
+import { IDepartment } from '@employee-and-department-management-system/interfaces';
+import { DepartmentModel } from './department.model';
+import { DB_COLLECTION_NAMES } from '@employee-and-department-management-system/enums';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { CommonDatabaseService } from '../common/services/common.database.service';
 
 @Injectable()
-export class DepartmentService {
-  create(createDepartmentDto: CreateDepartmentDto) {
-    return 'This action adds a new department';
-  }
-
-  findAll() {
-    return `This action returns all department`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} department`;
-  }
-
-  update(id: number, updateDepartmentDto: UpdateDepartmentDto) {
-    return `This action updates a #${id} department`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} department`;
+export class DepartmentDatabaseService extends CommonDatabaseService<IDepartment> {
+  constructor(
+    @InjectModel(DB_COLLECTION_NAMES.DEPARTMENTS)
+    private employeeModel: Model<DepartmentModel>
+  ) {
+    super(employeeModel, DB_COLLECTION_NAMES.DEPARTMENTS);
   }
 }

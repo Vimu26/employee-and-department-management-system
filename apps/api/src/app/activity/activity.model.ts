@@ -1,22 +1,29 @@
+import { ACTIVITY_ACTIONS } from '@employee-and-department-management-system/enums';
+import { IActivityLog } from '@employee-and-department-management-system/interfaces';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
-import { BaseEntitySchemaContent } from '../common/models/common.model';
 
-export type ActivityLogDocument = ActivityLog & Document;
+export type ActivityLogDocument = IActivityLog & Document;
 
 @Schema({ timestamps: true })
 export class ActivityLog {
-  @Prop({ type: Types.ObjectId, ref: 'Employee', required: true })
-  employeeId: Types.ObjectId;
+  @Prop({ type: Types.ObjectId, ref: 'employee', required: true })
+  employee_id: Types.ObjectId;
 
-  @Prop({ required: true, enum: ['Created', 'Updated', 'Deleted'] })
-  action: string;
+  @Prop({ required: true, enum: ACTIVITY_ACTIONS, type: String })
+  action: ACTIVITY_ACTIONS;
 
-  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
-  performedBy: Types.ObjectId;
+  @Prop({ required: true })
+  created_by: string;
 
-  @Prop({ type: BaseEntitySchemaContent })
-  baseEntity: Record<string, any>;
+  @Prop({ required: true })
+  last_modified_by: string;
+
+  @Prop({ default: Date.now })
+  created_on: Date;
+
+  @Prop({ default: Date.now })
+  last_modified_on: Date;
 }
 
-export const ActivityLogSchema = SchemaFactory.createForClass(ActivityLog);
+export const ActivityLogModel = SchemaFactory.createForClass(ActivityLog);

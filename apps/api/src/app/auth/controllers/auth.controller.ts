@@ -4,6 +4,8 @@ import { AuthDatabaseService } from '../services/auth.database.service';
 import { userQueryDto } from '../../user/dto/user-query.dto';
 import { LoginUserDto } from '../dtos/login.request.dto';
 import { CreateUserDto } from '../../user/dto/create-user.dto';
+import { IIdentity } from '@employee-and-department-management-system/interfaces';
+import { LoggedIdentity } from '../../common/decorators/logged-identity.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -16,8 +18,11 @@ export class AuthController {
   }
 
   @Post('register')
-  async registerUser(@Body() requestBody: CreateUserDto) {
-    return await this.authDatabaseService.registerUser(requestBody);
+  async registerUser(
+    @Body() requestBody: CreateUserDto,
+    @LoggedIdentity() loggedUser: IIdentity
+  ) {
+    return await this.authDatabaseService.registerUser(requestBody, loggedUser);
   }
 
   @Post('login')

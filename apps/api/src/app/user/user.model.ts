@@ -35,8 +35,18 @@ export class User {
   @Prop({ enum: USER_ROLES, required: true, type: String })
   role: USER_ROLES;
 
-  @Prop({ type: BaseEntitySchemaContent })
-  baseEntity: IBaseEntity;
+  // Explicit Base Entity Fields
+  @Prop({ required: true })
+  created_by: string;
+
+  @Prop({ required: true })
+  last_modified_by: string;
+
+  @Prop({ default: Date.now })
+  created_on: Date;
+
+  @Prop({ default: Date.now })
+  last_modified_on: Date;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

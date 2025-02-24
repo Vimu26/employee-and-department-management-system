@@ -1,16 +1,17 @@
 import { Module } from '@nestjs/common';
-import { EmployeeService } from './employee.database.service';
 import { EmployeeController } from './employee.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Employee, EmployeeSchema } from './employee.model';
+import { DB_COLLECTION_NAMES } from '@employee-and-department-management-system/enums';
+import { EmployeeModel } from './employee.model';
+import { EmployeeDatabaseService } from './employee.database.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: Employee.name, schema: EmployeeSchema },
+      { name: DB_COLLECTION_NAMES.EMPLOYEES, schema: EmployeeModel },
     ]),
   ],
   controllers: [EmployeeController],
-  providers: [EmployeeService],
+  providers: [EmployeeDatabaseService],
 })
 export class EmployeeModule {}
