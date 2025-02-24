@@ -1,4 +1,7 @@
-import { JOB_POSITION } from '@employee-and-department-management-system/enums';
+import {
+  EMPLOYEE_STATUS,
+  JOB_POSITION,
+} from '@employee-and-department-management-system/enums';
 import {
   IAddress,
   IEmployee,
@@ -9,6 +12,7 @@ import {
   IsEmail,
   IsEnum,
   IsNotEmpty,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
@@ -22,7 +26,7 @@ export class CreateEmployeeDto implements IEmployee {
   @Type(() => Object)
   address: IAddress;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   epf_no: string;
 
@@ -33,6 +37,14 @@ export class CreateEmployeeDto implements IEmployee {
   @IsNotEmpty()
   @IsString()
   nic: string;
+
+  @IsNotEmpty()
+  @IsEnum(EMPLOYEE_STATUS)
+  status: EMPLOYEE_STATUS;
+
+  @IsOptional()
+  @IsString()
+  profile_pic: string;
 
   @IsEmail()
   @IsNotEmpty()
