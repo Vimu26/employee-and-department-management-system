@@ -4,6 +4,7 @@ import {
   IsNotEmpty,
   IsEnum,
   ValidateNested,
+  IsOptional,
 } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
 import { USER_ROLES } from '@employee-and-department-management-system/enums';
@@ -28,13 +29,19 @@ export class CreateUserDto implements IUser {
   password: string;
 
   @IsEnum(USER_ROLES)
+  @IsNotEmpty()
   role: USER_ROLES;
 
   @ValidateNested()
+  @IsNotEmpty()
   @Type(() => Object)
   name: IName;
 
   @ValidateNested()
   @Type(() => Object)
   address: IAddress;
+
+  @IsString()
+  @IsOptional()
+  profile_pic: string;
 }

@@ -3,11 +3,9 @@ import { Document } from 'mongoose';
 import {
   BaseNameSchemaContent,
   BaseAddressSchemaContent,
-  BaseEntitySchemaContent,
 } from '../common/models/common.model';
 import {
   IAddress,
-  IBaseEntity,
   IName,
   IUser,
 } from '@employee-and-department-management-system/interfaces';
@@ -31,6 +29,9 @@ export class User {
 
   @Prop({ required: true })
   password: string;
+
+  @Prop()
+  profile_pic: string; //url of profile picture
 
   @Prop({ enum: USER_ROLES, required: true, type: String })
   role: USER_ROLES;
