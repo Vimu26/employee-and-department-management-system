@@ -3,6 +3,7 @@ import {
   ACTIVITY_ACTIONS,
   JOB_POSITION,
   DEPARTMENT_TYPE,
+  DB_COLLECTION_NAMES,
 } from '@employee-and-department-management-system/enums';
 import { Types } from 'mongoose';
 
@@ -10,6 +11,7 @@ export interface IEmployee extends IBaseEntity {
   name: IName;
   address: IAddress;
   epf_no: string;
+  nic: string;
   employee_id: string;
   email: string;
   phone: string;
@@ -37,8 +39,9 @@ export interface AuthResponse {
   token: string;
 }
 export interface IActivityLog extends IBaseEntity {
-  employee_id: string;
-  action: ACTIVITY_ACTIONS;
+  parent_id?: Types.ObjectId | string;
+  action?: ACTIVITY_ACTIONS;
+  model?: DB_COLLECTION_NAMES;
 }
 
 export type IOptionalActivityLogs = Partial<IActivityLog>;

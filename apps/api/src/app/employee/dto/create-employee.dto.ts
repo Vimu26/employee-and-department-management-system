@@ -30,6 +30,10 @@ export class CreateEmployeeDto implements IEmployee {
   @IsString()
   employee_id: string; //This must generate according to count of the employees
 
+  @IsNotEmpty()
+  @IsString()
+  nic: string;
+
   @IsEmail()
   @IsNotEmpty()
   @Transform((email) => email.value?.toLowerCase())

@@ -16,10 +16,10 @@ export class Department {
   @Prop({ enum: DEPARTMENT_TYPE, required: true, type: String })
   type: DEPARTMENT_TYPE;
 
-  @Prop({ required: true })
+  @Prop()
   created_by: string;
 
-  @Prop({ required: true })
+  @Prop()
   last_modified_by: string;
 
   @Prop({ default: Date.now })

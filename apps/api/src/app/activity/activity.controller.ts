@@ -31,7 +31,7 @@ export class ActivityLogController {
     @Query() query: ActivityLogQueryDto
   ): Promise<IActivityLog[]> {
     const filters = {
-      employeeId: query.employee_id,
+      patent_id: query.parent_id,
       action: query.action,
     };
 

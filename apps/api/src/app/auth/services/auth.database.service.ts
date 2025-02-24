@@ -10,13 +10,18 @@ import {
   AuthResponse,
   IUserOptional,
   IIdentity,
+  IActivityLog,
 } from '@employee-and-department-management-system/interfaces';
 import { UserModel } from '../../user/user.model';
-import { DB_COLLECTION_NAMES } from '@employee-and-department-management-system/enums';
+import {
+  ACTIVITY_ACTIONS,
+  DB_COLLECTION_NAMES,
+} from '@employee-and-department-management-system/enums';
 import { HashingService } from './hashing.service';
 import { userQueryDto } from '../../user/dto/user-query.dto';
 import { CreateUserDto } from '../../user/dto/create-user.dto';
 import { LoginUserDto } from '../dtos/login.request.dto';
+import { ActivityDatabaseService } from '../../activity/activity.database.service';
 
 @Injectable()
 export class AuthDatabaseService {
@@ -24,7 +29,8 @@ export class AuthDatabaseService {
     @InjectModel(DB_COLLECTION_NAMES.USERS)
     private readonly usersModel: Model<UserModel>,
     private jwtService: JwtService,
-    private passwordHashingService: HashingService
+    private passwordHashingService: HashingService,
+    private activityLogsDatabaseService: ActivityDatabaseService
   ) {}
 
   async getUsers(queryParams: userQueryDto) {
@@ -80,6 +86,16 @@ export class AuthDatabaseService {
 
     // Save the user to the database
     const user = await newUser.save();
+
+    //add logs
+    const newLog: IActivityLog = {
+      action: ACTIVITY_ACTIONS.UPDATED,
+      created_by: user._id?.toString(),
+      created_on: new Date(),
+      model: DB_COLLECTION_NAMES.USERS,
+      parent_id: user._id,
+    };
+    this.activityLogsDatabaseService.createLog(newLog);
 
     // Remove password before returning (for security)
     const { password: _, ...userWithoutPassword } = user.toObject();
