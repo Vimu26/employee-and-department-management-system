@@ -16,6 +16,13 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     })
   );
+  // Enable CORS with specific configurations
+  app.enableCors({
+    origin: 'http://localhost:4200', //for any origin put '*'
+    methods: 'GET,POST,PUT,DELETE,PATCH',
+    allowedHeaders: 'Content-Type, Authorization',
+  });
+
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
   const port = process.env.PORT || 3000;

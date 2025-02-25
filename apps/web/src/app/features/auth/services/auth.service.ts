@@ -1,14 +1,21 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Buffer } from 'buffer';
+import {
+  AuthResponse,
+  CommonResponse,
+  IIdentity,
+  ILogin,
+  IUser,
+} from '@employee-and-department-management-system/interfaces';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   constructor(private router: Router, private http: HttpClient) {}
-  readonly apiURL = 'http://localhost:3000/auth';
+  readonly apiURL = 'http://localhost:3000/api/auth';
 
   getToken(): string | null {
     return localStorage.getItem('token');
@@ -35,6 +42,22 @@ export class AuthService {
       return Date.now() >= expirationTime;
     }
     return true;
+  }
+
+  // Register user
+  registerUser(userData: IUser): Observable<CommonResponse<IIdentity>> {
+    return this.http.post<CommonResponse<IIdentity>>(
+      `${this.apiURL}/register`,
+      userData
+    );
+  }
+
+  // Login user
+  loginUser(loginData: ILogin): Observable<CommonResponse<AuthResponse>> {
+    return this.http.post<CommonResponse<AuthResponse>>(
+      `${this.apiURL}/login`,
+      loginData
+    );
   }
 
   //sending token attaching to headers manually

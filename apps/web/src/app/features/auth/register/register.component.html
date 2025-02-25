@@ -1,1 +1,207 @@
-<p>register works!</p>
+<div class="reg-container">
+  <div class="conatiner">
+    <mat-card class="auth-card">
+      <mat-card-title class="text-center mb-3">Register</mat-card-title>
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="mt-4">
+        <div class="row">
+          <div class="col-sm">
+            <!-- First Name -->
+            <mat-form-field class="w-100 mb-3" appearance="outline">
+              <mat-label>First Name</mat-label>
+              <input
+                matInput
+                formControlName="first_name"
+                placeholder="Enter your first name"
+              />
+              <mat-error
+                *ngIf="registerForm.controls.first_name.hasError('required')"
+              >
+                First name is required
+              </mat-error>
+              <mat-error
+                *ngIf="registerForm.controls.first_name.hasError('minlength')"
+              >
+                First name must be at least 3 characters
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-sm">
+            <!-- Last Name -->
+            <mat-form-field class="w-100 mb-3" appearance="outline">
+              <mat-label>Last Name</mat-label>
+              <input
+                matInput
+                formControlName="last_name"
+                placeholder="Enter your last name"
+              />
+              <mat-error
+                *ngIf="registerForm.controls.last_name.hasError('required')"
+              >
+                Last name is required
+              </mat-error>
+              <mat-error
+                *ngIf="registerForm.controls.last_name.hasError('minlength')"
+              >
+                Last name must be at least 3 characters
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <!-- Username -->
+        <mat-form-field class="w-100 mb-3" appearance="outline">
+          <mat-label>Username</mat-label>
+          <input
+            matInput
+            formControlName="username"
+            placeholder="Enter your username"
+          />
+          <mat-error
+            *ngIf="registerForm.controls.username.hasError('required')"
+          >
+            Username is required
+          </mat-error>
+          <mat-error
+            *ngIf="registerForm.controls.username.hasError('minlength')"
+          >
+            Last name must be at least 4 characters
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Email -->
+        <mat-form-field class="w-100 mb-3" appearance="outline">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            formControlName="email"
+            placeholder="Enter your email"
+          />
+          <mat-error *ngIf="registerForm.controls.email.hasError('required')">
+            Email is required
+          </mat-error>
+          <mat-error *ngIf="registerForm.controls.email.hasError('email')">
+            Please enter a valid email address
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Password -->
+        <mat-form-field class="w-100 mb-3" appearance="outline">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            formControlName="password"
+            type="password"
+            placeholder="Enter your password"
+          />
+          <mat-error
+            *ngIf="registerForm.controls.password.hasError('required')"
+          >
+            Password is required
+          </mat-error>
+          <mat-error
+            *ngIf="registerForm.controls.password.hasError('minlength')"
+          >
+            Password must be at least 6 characters
+          </mat-error>
+        </mat-form-field>
+
+        <!-- User Role (Dropdown) -->
+        <mat-form-field class="w-100 mb-3" appearance="outline">
+          <mat-label>User Role</mat-label>
+          <mat-select formControlName="user_role">
+            <mat-option *ngFor="let role of userRoles" [value]="role">{{
+              role
+            }}</mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="registerForm.controls.user_role.hasError('required')"
+          >
+            User role is required
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Address -->
+        <div class="row">
+          <div class="col-sm">
+            <mat-form-field class="w-100 mb-3" appearance="outline">
+              <mat-label>Address No</mat-label>
+              <input
+                matInput
+                formControlName="address_no"
+                placeholder="Enter address number"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-sm">
+            <mat-form-field class="w-100 mb-3" appearance="outline">
+              <mat-label>Street 1</mat-label>
+              <input
+                matInput
+                formControlName="address_street1"
+                placeholder="Enter street 1"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm">
+            <mat-form-field class="w-100 mb-3" appearance="outline">
+              <mat-label>Street 2</mat-label>
+              <input
+                matInput
+                formControlName="address_street2"
+                placeholder="Enter street 2"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-sm">
+            <mat-form-field class="w-100 mb-3" appearance="outline">
+              <mat-label>City</mat-label>
+              <input
+                matInput
+                formControlName="address_city"
+                placeholder="Enter city"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm">
+            <mat-form-field class="w-100 mb-3" appearance="outline">
+              <mat-label>Province</mat-label>
+              <input
+                matInput
+                formControlName="address_province"
+                placeholder="Enter province"
+              />
+            </mat-form-field>
+          </div>
+          <div class="col-sm">
+            <mat-form-field class="w-100 mb-3" appearance="outline">
+              <mat-label>Country</mat-label>
+              <input
+                matInput
+                formControlName="address_country"
+                placeholder="Enter country"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          [disabled]="registerForm.invalid"
+          class="w-100"
+        >
+          Register
+        </button>
+      </form>
+
+      <div class="text-center mt-3">
+        Already have an account? <a routerLink="/auth/login">Login</a>
+      </div>
+    </mat-card>
+  </div>
+</div>

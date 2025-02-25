@@ -38,6 +38,11 @@ export type IEmployeeOptional = Partial<IEmployee>;
 
 export type IIdentity = Omit<IUser, 'password'>;
 
+export interface ILogin {
+  username: string;
+  password: string;
+}
+
 export interface AuthResponse {
   user: IIdentity;
   token: string;
@@ -81,4 +86,17 @@ export interface IAddress {
   city: string;
   province: string;
   country: string;
+}
+
+export interface CommonResponse<T> {
+  statusCode: number;
+  message: string;
+  success: boolean;
+  data: T;
+  count?: number;
+}
+
+export interface CommonCheckRequest {
+  success: boolean;
+  error: string;
 }
