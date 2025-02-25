@@ -10,6 +10,21 @@ import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../../../material.module';
 import { USER_ROLES } from '@employee-and-department-management-system/enums';
 
+export interface RegisterFormData {
+  first_name: FormControl<string | null>;
+  last_name: FormControl<string | null>;
+  username: FormControl<string | null>;
+  email: FormControl<string | null>;
+  user_role: FormControl<string | null>;
+  password: FormControl<string | null>;
+  address_no: FormControl<string | null>;
+  address_street1: FormControl<string | null>;
+  address_street2: FormControl<string | null>;
+  address_city: FormControl<string | null>;
+  address_province: FormControl<string | null>;
+  address_country: FormControl<string | null>;
+}
+
 @Component({
   selector: 'app-register',
   imports: [CommonModule, MaterialModule, ReactiveFormsModule, RouterModule],
@@ -18,7 +33,7 @@ import { USER_ROLES } from '@employee-and-department-management-system/enums';
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
-  registerForm = new FormGroup({
+  registerForm = new FormGroup<RegisterFormData>({
     first_name: new FormControl('', [
       Validators.required,
       Validators.minLength(3),
@@ -73,7 +88,7 @@ export class RegisterComponent {
         },
       };
 
-      console.log(registerPayload); 
+      console.log(registerPayload);
     }
   }
 }
