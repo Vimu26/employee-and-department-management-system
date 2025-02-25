@@ -13,9 +13,10 @@ import { USER_ROLES } from '@employee-and-department-management-system/enums';
 import {
   IName,
   IAddress,
+  IUser,
 } from '@employee-and-department-management-system/interfaces';
 
-export class RegisterUserDto {
+export class RegisterUserDto implements IUser {
   @IsString()
   @IsNotEmpty()
   username: string;

@@ -1,41 +1,40 @@
 <div class="layout">
-    <!-- Sidebar -->
-    <div class="sidebar" [class.collapsed]="isCollapsed">
-      <button class="toggle-btn" (click)="toggleSidebar()">
-        <mat-icon>menu</mat-icon>
-      </button>
-  
-      <ul class="nav flex-column">
-        <li class="nav-item">
-          <a class="nav-link" routerLink="launchpad">
-            <mat-icon>dashboard</mat-icon>
-            <span *ngIf="!isCollapsed">Launchpad</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="employees">
-            <mat-icon>group</mat-icon>
-            <span *ngIf="!isCollapsed">Employees</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="departments">
-            <mat-icon>business</mat-icon>
-            <span *ngIf="!isCollapsed">Departments</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="settings">
-            <mat-icon>settings</mat-icon>
-            <span *ngIf="!isCollapsed">Settings</span>
-          </a>
-        </li>
-      </ul>
-    </div>
-  
-    <!-- Main Content -->
-    <div class="main-content">
-      <router-outlet></router-outlet>
-    </div>
+  <!-- Sidebar -->
+  <div class="sidebar" [class.collapsed]="isCollapsed">
+    <button class="toggle-btn" (click)="toggleSidebar()">
+      <mat-icon>menu</mat-icon>
+    </button>
+
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="launchpad">
+          <mat-icon>dashboard</mat-icon>
+          <span *ngIf="!isCollapsed">Launchpad</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="employees">
+          <mat-icon>group</mat-icon>
+          <span *ngIf="!isCollapsed">Employees</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="departments">
+          <mat-icon>business</mat-icon>
+          <span *ngIf="!isCollapsed">Departments</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="settings">
+          <mat-icon>settings</mat-icon>
+          <span *ngIf="!isCollapsed">Settings</span>
+        </a>
+      </li>
+    </ul>
   </div>
-  
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -1,1 +1,15 @@
-/* You can add global styles to this file, and also import other style files */
+.success-snackbar {
+  background-color: #4caf50 !important;
+  color: white !important;
+}
+
+.error-snackbar {
+  background-color: #f44336 !important;
+  color: white !important;
+}
+
+.mat-snack-bar-container {
+  font-size: 16px;
+  font-weight: 500;
+  padding: 8px 16px;
+}

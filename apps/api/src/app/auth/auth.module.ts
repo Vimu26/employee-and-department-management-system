@@ -10,6 +10,7 @@ import { DB_COLLECTION_NAMES } from '@employee-and-department-management-system/
 import { JwtAuthGuard } from './guards/auth.guard';
 import { PublicGuard } from './guards/public.guard';
 import { HashingService } from './services/hashing.service';
+import { ResponseService } from '../common/services/response.service';
 
 @Global()
 @Module({
@@ -31,13 +32,20 @@ import { HashingService } from './services/hashing.service';
     ]),
   ],
   controllers: [AuthController],
-  providers: [AuthDatabaseService, HashingService, PublicGuard, JwtAuthGuard],
+  providers: [
+    AuthDatabaseService,
+    HashingService,
+    PublicGuard,
+    JwtAuthGuard,
+    ResponseService,
+  ],
   exports: [
     JwtModule,
     PassportModule,
     PublicGuard,
     JwtAuthGuard,
     AuthDatabaseService,
+    ResponseService,
   ],
 })
 export class AuthModule {}

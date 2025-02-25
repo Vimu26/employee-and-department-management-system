@@ -5,7 +5,7 @@ import { SidenavComponent } from '../../components/sidenav/sidenav.component';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, RouterModule,SidenavComponent],
+  imports: [CommonModule, RouterModule, SidenavComponent],
   standalone: true,
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],

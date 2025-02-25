@@ -5,8 +5,8 @@ import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-sidenav',
-  imports: [CommonModule,MaterialModule,RouterModule],
-  standalone:true,
+  imports: [CommonModule, MaterialModule, RouterModule],
+  standalone: true,
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss',
 })

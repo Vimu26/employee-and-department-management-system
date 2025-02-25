@@ -6,9 +6,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MaterialModule } from '../../../material.module';
 import { USER_ROLES } from '@employee-and-department-management-system/enums';
+import { IUser } from '@employee-and-department-management-system/interfaces';
+import { AuthService } from '../services/auth.service';
+import { SnackbarService } from '../../../common/services/snackbar.service';
 
 export interface RegisterFormData {
   first_name: FormControl<string | null>;
@@ -33,6 +36,12 @@ export interface RegisterFormData {
   styleUrls: ['./register.component.scss'],
 })
 export class RegisterComponent {
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private snackbarService: SnackbarService
+  ) {}
+
   registerForm = new FormGroup<RegisterFormData>({
     first_name: new FormControl('', [
       Validators.required,
@@ -69,26 +78,39 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       const formData = this.registerForm.value;
 
-      const registerPayload = {
-        username: formData.username,
+      const registerPayload: IUser = {
+        username: formData.username ?? '',
         name: {
-          first_name: formData.first_name,
-          last_name: formData.last_name,
+          first_name: formData.first_name ?? '',
+          last_name: formData.last_name ?? '',
         },
-        email: formData.email,
-        password: formData.password,
-        role: formData.user_role,
+        email: formData.email ?? '',
+        password: formData.password ?? '',
+        role: (formData.user_role as USER_ROLES) ?? '',
         address: {
-          no: formData.address_no,
-          street1: formData.address_street1,
-          street2: formData.address_street2,
-          city: formData.address_city,
-          province: formData.address_province,
-          country: formData.address_country,
+          no: formData.address_no ?? '',
+          street1: formData.address_street1 ?? '',
+          street2: formData.address_street2 ?? '',
+          city: formData.address_city ?? '',
+          province: formData.address_province ?? '',
+          country: formData.address_country ?? '',
         },
       };
 
-      console.log(registerPayload);
+      this.authService.registerUser(registerPayload).subscribe({
+        next: (res) => {
+          if (res.data) {
+            console.log(res);
+            this.router.navigate(['/auth/login']);
+          } else {
+            console.log(res);
+            this.snackbarService.error(res?.message);
+          }
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
     }
   }
 }

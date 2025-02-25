@@ -7,7 +7,10 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { MaterialModule } from '../../../material.module';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
+import { SnackbarService } from '../../../common/services/snackbar.service';
+import { AuthService } from '../services/auth.service';
+import { ILogin } from '@employee-and-department-management-system/interfaces';
 
 export interface LoginFormGroup {
   username: FormControl<string | null>;
@@ -21,6 +24,12 @@ export interface LoginFormGroup {
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
+  constructor(
+    private snackBar: SnackbarService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
   loginForm = new FormGroup<LoginFormGroup>({
     username: new FormControl<string | null>('', Validators.required),
     password: new FormControl<string | null>('', Validators.required),
@@ -28,7 +37,25 @@ export class LoginComponent {
 
   onLogin() {
     if (this.loginForm.valid) {
-      console.log(this.loginForm.value);
+      const loginData: ILogin = {
+        username: this.loginForm.value.username ?? '',
+        password: this.loginForm.value.password ?? '',
+      };
+
+      this.authService.loginUser(loginData).subscribe({
+        next: (response) => {
+          if (response?.data) {
+            console.log(response);
+            this.router.navigate(['/app/launchpad']);
+            localStorage.setItem('token', response.data.token);
+          } else {
+            this.snackBar.error(response?.message);
+          }
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
     }
   }
 }

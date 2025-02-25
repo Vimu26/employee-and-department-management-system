@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-launchpad',
   imports: [CommonModule],
-  standalone:true,
+  standalone: true,
   templateUrl: './launchpad.component.html',
   styleUrl: './launchpad.component.scss',
 })
