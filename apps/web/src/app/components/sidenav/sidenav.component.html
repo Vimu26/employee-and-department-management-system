@@ -8,26 +8,26 @@
     <ul class="nav flex-column">
       <li class="nav-item">
         <a class="nav-link" routerLink="launchpad">
-          <mat-icon>dashboard</mat-icon>
-          <span *ngIf="!isCollapsed">Launchpad</span>
+          <span *ngIf="!isCollapsed" class="text">Launchpad</span>
+          <mat-icon class="icon">dashboard</mat-icon>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="employees">
-          <mat-icon>group</mat-icon>
-          <span *ngIf="!isCollapsed">Employees</span>
+          <span *ngIf="!isCollapsed" class="text">Employees</span>
+          <mat-icon class="icon">group</mat-icon>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="departments">
-          <mat-icon>business</mat-icon>
-          <span *ngIf="!isCollapsed">Departments</span>
+          <span *ngIf="!isCollapsed" class="text">Departments</span>
+          <mat-icon class="icon">business</mat-icon>
         </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="settings">
-          <mat-icon>settings</mat-icon>
-          <span *ngIf="!isCollapsed">Settings</span>
+          <span *ngIf="!isCollapsed" class="text">Settings</span>
+          <mat-icon class="icon">settings</mat-icon>
         </a>
       </li>
     </ul>
@@ -35,6 +35,11 @@
 
   <!-- Main Content -->
   <div class="main-content">
+    <!-- Header -->
+    <div class="header">
+      <div class="app-name">Employee and Department Management System</div>
+      <div class="current-route">{{ selectedRoute }}</div>
+    </div>
     <router-outlet></router-outlet>
   </div>
 </div>
