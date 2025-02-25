@@ -2,9 +2,15 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from './material.module';
 import { FooterComponent } from './components/footer/footer.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
-  imports: [RouterModule, MaterialModule, FooterComponent],
+  imports: [
+    RouterModule,
+    MaterialModule,
+    FooterComponent,
+    ReactiveFormsModule,
+  ],
   standalone: true,
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -12,5 +18,5 @@ import { FooterComponent } from './components/footer/footer.component';
 })
 export class AppComponent {
   title = 'web';
-  isSideNavShow =true
+  isSideNavShow = true;
 }
