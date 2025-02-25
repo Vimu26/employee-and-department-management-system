@@ -22,9 +22,7 @@ export interface LoginFormGroup {
 })
 export class LoginComponent {
   loginForm = new FormGroup<LoginFormGroup>({
-    username: new FormControl<string | null>('', 
-      Validators.required
-    ),
+    username: new FormControl<string | null>('', Validators.required),
     password: new FormControl<string | null>('', Validators.required),
   });
 
