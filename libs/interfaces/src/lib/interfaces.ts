@@ -90,9 +90,9 @@ export interface IAddress {
 }
 
 export interface CommonResponse<T> {
-  statusCode: number;
-  message: string;
-  success: boolean;
+  statusCode?: number;
+  message?: string;
+  success?: boolean;
   data: T;
   count?: number;
 }
