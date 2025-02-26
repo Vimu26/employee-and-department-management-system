@@ -1,0 +1,22 @@
+.paginator-container {
+  display: flex;
+  justify-content: flex-start; 
+  margin-top: 10px;
+}
+
+.add-department-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000; 
+}
+
+.full-width {
+  width: 100%;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
