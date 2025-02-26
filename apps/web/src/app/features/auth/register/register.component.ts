@@ -154,7 +154,7 @@ export class RegisterComponent {
             this.router.navigate(['/auth/login']);
           } else {
             console.log(res);
-            this.snackbarService.error(res?.message);
+            this.snackbarService.error(res?.message ?? '');
           }
         },
         error: (err) => {

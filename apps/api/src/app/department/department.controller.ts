@@ -77,14 +77,15 @@ export class DepartmentController {
 
   @Get(':id')
   async getDepartment(
-    @Param('id') params: { id: string }
-  ): Promise<IDepartment | null> {
-    return this.departmentDatabaseService.findById(params?.id);
+    @Param() params: { id: string }
+  ): Promise<CommonResponse<IDepartment>> {
+    const results = await this.departmentDatabaseService.findById(params?.id);
+    return { data: results };
   }
 
   @Patch(':id')
   async updateDepartment(
-    @Param('id') params: { id: string },
+    @Param() params: { id: string },
     @Body() requestBody: UpdateDepartmentDto,
     @LoggedIdentity() loggedUser: IIdentity
   ): Promise<IDepartment | null> {
@@ -97,6 +98,7 @@ export class DepartmentController {
     const updatedDepartment: IDepartment = {
       ...foundDepartment,
       ...requestBody,
+      _id : foundDepartment?._id
     };
 
     return this.departmentDatabaseService.updateDocument(updatedDepartment, {
@@ -106,9 +108,10 @@ export class DepartmentController {
 
   @Delete(':id')
   async deleteDepartment(
-    @Param('id') params: { id: string },
+    @Param() params: { id: string },
     @LoggedIdentity() loggedUser: IIdentity
   ): Promise<IDepartment | null> {
+    console.log(params.id);
     const foundDepartment = await this.departmentDatabaseService.findById(
       params?.id
     );

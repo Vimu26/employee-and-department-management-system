@@ -23,7 +23,7 @@ export class DepartmentService {
   
 
   // Get department by ID
-  getDepartmentById(id: string): Observable<CommonResponse<IDepartment>> {
+   getDepartmentById(id: string): Observable<CommonResponse<IDepartment>> {
     return this.http.get<CommonResponse<IDepartment>>(`${this.apiURL}/${id}`);
   }
 

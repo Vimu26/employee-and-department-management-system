@@ -47,4 +47,14 @@
     padding-bottom: 0.75rem; 
   }
   
+  .action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 8px;
+    width: 100%;
+  }
   
+  .spacer {
+    flex-grow: 1;
+  }

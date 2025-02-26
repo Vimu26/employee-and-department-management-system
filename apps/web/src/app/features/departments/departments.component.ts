@@ -15,6 +15,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { SearchContainerComponent } from '../../components/search-container/search-container.component';
 import { DepartmentService } from './departments.service';
 import { HttpParams } from '@angular/common/http';
+import { SnackbarService } from '../../common/services/snackbar.service';
 
 @Component({
   selector: 'app-departments',
@@ -60,7 +61,8 @@ export class DepartmentsComponent implements OnInit {
   constructor(
     private router: Router,
     private departmentService: DepartmentService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+       private snackBar: SnackbarService,
   ) {}
 
   ngOnInit() {
@@ -110,5 +112,26 @@ export class DepartmentsComponent implements OnInit {
 
   addDepartment() {
     this.router.navigate(['/app/departments/add']);
+  }
+
+  editDepartment(department: IDepartment) {
+    if(!department?._id) return
+    this.router.navigate([`/app/departments/edit/${department?._id}`]);
+  }
+
+  deleteDepartment(department: IDepartment, index: number) {
+    if (department?._id) {
+      console.log(department._id.toString())
+      this.departmentService.deleteDepartment(department._id.toString()).subscribe({
+        next: () => {
+          this.pagedDepartments.splice(index, 1);
+          this.getAllDepartments();
+          this.snackBar.success("Department Deleted Successfully!")
+        },
+        error: (error) => {
+          console.error('Error deleting department:', error);
+        },
+      });
+    }
   }
 }
