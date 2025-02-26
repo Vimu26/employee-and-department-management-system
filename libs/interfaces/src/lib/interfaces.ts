@@ -100,3 +100,10 @@ export interface CommonCheckRequest {
   success: boolean;
   error: string;
 }
+
+export interface IFiles extends Document {
+  filename: string;
+  originalname: string;
+  path: string;
+  mimetype: string;
+}

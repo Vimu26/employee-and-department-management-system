@@ -10,6 +10,7 @@ import { DepartmentModule } from './department/department.module';
 import { ActivityModule } from './activity/activity.module';
 import { CommonModule } from './common/common.module';
 import { UserModule } from './user/user.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { UserModule } from './user/user.module';
     ActivityModule,
     CommonModule,
     UserModule,
+    FilesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
