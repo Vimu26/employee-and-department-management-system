@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../material.module';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
@@ -11,12 +11,12 @@ import { FileService } from '../../common/services/files.service';
   templateUrl: './sidenav.component.html',
   styleUrl: './sidenav.component.scss',
 })
-export class SidenavComponent implements OnInit {
+export class SidenavComponent implements OnInit, OnDestroy {
   isCollapsed = false;
   selectedRoute = 'Launchpad';
   profilePic: string | null = null;
 
-  constructor(private router: Router, private fileService : FileService) {
+  constructor(private router: Router, private fileService: FileService) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.setSelectedRoute(this.getRouteName(event.urlAfterRedirects));
@@ -25,12 +25,27 @@ export class SidenavComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const userData =localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')!) : null;
-    console.log(userData)
+    this.checkScreenSize();
+
+    window.addEventListener('resize', this.checkScreenSize.bind(this));
+
+    const userData = localStorage.getItem('user')
+      ? JSON.parse(localStorage.getItem('user')!)
+      : null;
     if (userData) {
-      const fileName  = userData?.profile_pic
-      this.profilePic =this.fileService.generateFileUrlByFileName(fileName)
-      console.log(this.profilePic)
+      const fileName = userData?.profile_pic;
+      this.profilePic = this.fileService.generateFileUrlByFileName(fileName);
+      console.log(this.profilePic);
+    }
+  }
+
+  ngOnDestroy() {
+    window.removeEventListener('resize', this.checkScreenSize.bind(this));
+  }
+
+  checkScreenSize() {
+    if (window.innerWidth <= 768) {
+      this.isCollapsed = true;
     }
   }
 
