@@ -1,0 +1,50 @@
+.paginator-container {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+.add-department-btn {
+  position: fixed;
+  bottom: 8vh;
+  right: 20px;
+  z-index: 1000;
+}
+
+.dep-container {
+  margin-bottom: 8vh;
+}
+
+.header-row {
+    display: flex;
+    justify-content: space-between; 
+    width: 100%;
+  }
+  
+  .label {
+    font-size: 12px;
+  }
+  
+  .department-details {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .department-row {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .key-value {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 48%;
+  }
+
+  mat-expansion-panel {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem; 
+  }
+  
+  

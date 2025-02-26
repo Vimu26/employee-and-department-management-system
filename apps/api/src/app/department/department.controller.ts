@@ -14,6 +14,7 @@ import { CreateDepartmentDto } from './dto/create-department.dto';
 import { UpdateDepartmentDto } from './dto/update-department.dto';
 import { DepartmentDatabaseService } from './department.database.service';
 import {
+  CommonResponse,
   IDepartment,
   IIdentity,
 } from '@employee-and-department-management-system/interfaces';
@@ -21,12 +22,14 @@ import { JwtAuthGuard } from '../auth/guards/auth.guard';
 import { LoggedIdentity } from '../common/decorators/logged-identity.decorator';
 import { FilterQuery } from 'mongoose';
 import { DepartmentQueryDto } from './dto/department.query.dto';
+import { ResponseService } from '../common/services/response.service';
 
 @Controller('departments')
 @UseGuards(JwtAuthGuard)
 export class DepartmentController {
   constructor(
-    private readonly departmentDatabaseService: DepartmentDatabaseService
+    private readonly departmentDatabaseService: DepartmentDatabaseService,
+    public responseService: ResponseService
   ) {}
 
   @Post()
@@ -49,13 +52,27 @@ export class DepartmentController {
   async findAllDepartments(
     @LoggedIdentity() loggedUser: IIdentity,
     @Query() query: DepartmentQueryDto
-  ): Promise<IDepartment[]> {
+  ): Promise<CommonResponse<IDepartment[]>> {
     const options = { limit: query?.size ?? 10, skip: query?.start ?? 0 };
     const filters: FilterQuery<IDepartment> = {};
-    return await this.departmentDatabaseService.filterDocuments(
-      filters,
-      options
-    );
+    if (query?.name) {
+      filters['name'] = { $regex: query.name, $options: 'i' };
+    }
+
+    if (query?.type) {
+      filters['type'] = query.type;
+    }
+
+    if (query?._id) {
+      filters['_id'] = query._id;
+    }
+
+    const docs =
+      await this.departmentDatabaseService.filterPaginatedDocumentsWithCount(
+        filters,
+        options
+      );
+    return this.responseService.paginatedResponse(docs);
   }
 
   @Get(':id')

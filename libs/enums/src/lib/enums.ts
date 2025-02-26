@@ -49,3 +49,8 @@ export enum EMPLOYEE_STATUS {
   INACTIVE = 'INACTIVE',
   DELETED = 'DELETED',
 }
+
+export enum CHIP_TYPES {
+  DROPDOWN = 'DROPDOWN',
+  TEXT = 'TEXT',
+}

@@ -146,7 +146,7 @@ export class RegisterComponent {
           country: formData.address_country ?? '',
         },
       };
-     console.log(registerPayload)
+      console.log(registerPayload);
       this.authService.registerUser(registerPayload).subscribe({
         next: (res) => {
           if (res.data) {

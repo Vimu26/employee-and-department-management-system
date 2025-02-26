@@ -94,51 +94,54 @@ mat-icon {
 }
 
 .header {
-    height: 13vh;
-    background-color: #23304c;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px 20px;
-    font-size: 1.2rem;
-  }
+  height: 13vh;
+  background-color: #23304c;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+}
 
-  .app-name {
-    font-weight: bold;
-    font-size: 1.5rem;
-  }
-  
-  .current-route {
-    font-size: 1rem;
-    font-style: italic;
-    color: #f0f0f0;
-  }
+.app-name {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
 
-  .profile-section {
-    display: flex;
-    justify-content: center; 
-    align-items: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
-    width: 100%;
+.current-route {
+  font-size: 1rem;
+  font-style: italic;
+  color: #f0f0f0;
+}
+
+.profile-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.profile-pic {
+  width: 8rem;
+  height: 8rem;
+  border-radius: 50%;
+  object-fit: cover;
+  transition: width 0.3s ease, height 0.3s ease;
+}
+
+.sidebar.collapsed .profile-section {
+  justify-content: center;
+}
+
+.sidebar.collapsed .profile-pic {
+  width: 2.8rem;
+  height: 2.8rem;
+}
+@media (max-width: 768px) {
+  .toggle-btn {
+    display: none;
   }
-  
-  .profile-pic {
-    width: 8rem; 
-    height: 8rem;
-    border-radius: 50%;
-    object-fit: cover;
-    transition: width 0.3s ease, height 0.3s ease;
-  }
-  
-  .sidebar.collapsed .profile-section {
-    justify-content: center;
-  }
-  
-  .sidebar.collapsed .profile-pic {
-    width: 2.8rem; 
-    height: 2.8rem;
-  }
-  
-  
+}

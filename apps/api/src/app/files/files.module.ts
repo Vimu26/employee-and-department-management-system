@@ -21,7 +21,7 @@ import { join } from 'path';
     // }),
     MulterModule.register({
       storage: diskStorage({
-        destination: join(process.cwd(), 'uploads'),  // Use Nx root for the uploads folder
+        destination: join(process.cwd(), 'uploads'), // Use Nx root for the uploads folder
         filename: (req, file, cb) => {
           const filename = `${Date.now()}-${file.originalname}`;
           cb(null, filename);
@@ -29,8 +29,8 @@ import { join } from 'path';
       }),
     }),
     MongooseModule.forFeature([
-          { name: DB_COLLECTION_NAMES.FILES, schema: FileModel },
-        ]),
+      { name: DB_COLLECTION_NAMES.FILES, schema: FileModel },
+    ]),
   ],
   controllers: [FilesController],
   providers: [FilesService],
