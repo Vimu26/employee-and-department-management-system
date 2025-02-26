@@ -7,8 +7,10 @@ import { DB_COLLECTION_NAMES } from '@employee-and-department-management-system/
 
 @Injectable()
 export class FilesService {
-  constructor(@InjectModel(DB_COLLECTION_NAMES.FILES) private fileModel: Model<File>) {}
-  
+  constructor(
+    @InjectModel(DB_COLLECTION_NAMES.FILES) private fileModel: Model<File>
+  ) {}
+
   handleFileUpload(file: Express.Multer.File) {
     if (!file) {
       throw new BadRequestException('no file uploaded');
