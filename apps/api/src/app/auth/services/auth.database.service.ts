@@ -54,7 +54,7 @@ export class AuthDatabaseService {
     data: CreateUserDto,
     loggedIdentity: IIdentity
   ): Promise<IIdentity> {
-    const { name, email, password, role, address, username } = data;
+    const { name, email, password, role, address, username, profile_pic } = data;
 
     // Check if the email is already in use
     const existingUser = await this.usersModel.findOne({ username });
@@ -81,6 +81,7 @@ export class AuthDatabaseService {
       password: hashedPassword,
       role,
       address,
+      profile_pic,
       created_by: loggedIdentity?._id?.toString(),
     });
 
