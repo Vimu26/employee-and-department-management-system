@@ -102,6 +102,7 @@ export interface CommonCheckRequest {
 }
 
 export interface IFiles extends Document {
+  _id?: Types.ObjectId;
   filename: string;
   originalname: string;
   path: string;

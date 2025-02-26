@@ -12,6 +12,7 @@ import { USER_ROLES } from '@employee-and-department-management-system/enums';
 import { IUser } from '@employee-and-department-management-system/interfaces';
 import { AuthService } from '../services/auth.service';
 import { SnackbarService } from '../../../common/services/snackbar.service';
+import { FileService } from '../../../common/services/files.service';
 
 export interface RegisterFormData {
   first_name: FormControl<string | null>;
@@ -20,6 +21,7 @@ export interface RegisterFormData {
   email: FormControl<string | null>;
   user_role: FormControl<string | null>;
   password: FormControl<string | null>;
+  profile_pic: FormControl<string | null>;
   address_no: FormControl<string | null>;
   address_street1: FormControl<string | null>;
   address_street2: FormControl<string | null>;
@@ -39,7 +41,8 @@ export class RegisterComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private snackbarService: SnackbarService
+    private snackbarService: SnackbarService,
+    private fileService: FileService
   ) {}
 
   registerForm = new FormGroup<RegisterFormData>({
@@ -64,6 +67,7 @@ export class RegisterComponent {
       Validators.required,
       Validators.minLength(6),
     ]),
+    profile_pic: new FormControl(null),
     address_no: new FormControl('', [Validators.required]),
     address_street1: new FormControl('', [Validators.required]),
     address_street2: new FormControl(''),
@@ -73,6 +77,51 @@ export class RegisterComponent {
   });
 
   userRoles = Object.values(USER_ROLES);
+  selectedFile: File | null = null;
+  isUploading = false;
+  fileName = '';
+  fileError = '';
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const file = input?.files?.[0];
+
+    if (file) {
+      // Reset any previous error
+      this.fileError = '';
+      this.selectedFile = file;
+    }
+  }
+
+  onFileChange(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedFile = file;
+    }
+  }
+
+  uploadFile(): void {
+    if (!this.selectedFile) {
+      this.fileError = 'Please select a file first.';
+      return;
+    }
+
+    this.isUploading = true;
+    this.fileService.uploadFile(this.selectedFile).subscribe({
+      next: (res) => {
+        this.isUploading = false;
+        this.fileName = res?.filename;
+        console.log('File uploaded successfully', res);
+        // this.snackBar.open('File uploaded successfully!', 'Close', { duration: 3000 });
+      },
+      error: (err) => {
+        this.isUploading = false;
+        console.error('File upload failed', err);
+        this.fileError = 'File upload failed. Please try again.';
+        // this.snackBar.open('File upload failed. Please try again.', 'Close', { duration: 3000 });
+      },
+    });
+  }
 
   onSubmit() {
     if (this.registerForm.valid) {
@@ -87,6 +136,7 @@ export class RegisterComponent {
         email: formData.email ?? '',
         password: formData.password ?? '',
         role: (formData.user_role as USER_ROLES) ?? '',
+        profile_pic: this.fileName,
         address: {
           no: formData.address_no ?? '',
           street1: formData.address_street1 ?? '',
@@ -96,7 +146,7 @@ export class RegisterComponent {
           country: formData.address_country ?? '',
         },
       };
-
+     console.log(registerPayload)
       this.authService.registerUser(registerPayload).subscribe({
         next: (res) => {
           if (res.data) {

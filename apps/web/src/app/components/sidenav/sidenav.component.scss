@@ -7,7 +7,6 @@
   width: 250px;
   background: #f1f1f1;
   color: rgb(0, 0, 0);
-  padding-top: 20px;
   transition: width 0.3s ease-in-out;
   display: flex;
   flex-direction: column;
@@ -115,3 +114,31 @@ mat-icon {
     font-style: italic;
     color: #f0f0f0;
   }
+
+  .profile-section {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  
+  .profile-pic {
+    width: 8rem; 
+    height: 8rem;
+    border-radius: 50%;
+    object-fit: cover;
+    transition: width 0.3s ease, height 0.3s ease;
+  }
+  
+  .sidebar.collapsed .profile-section {
+    justify-content: center;
+  }
+  
+  .sidebar.collapsed .profile-pic {
+    width: 2.8rem; 
+    height: 2.8rem;
+  }
+  
+  
