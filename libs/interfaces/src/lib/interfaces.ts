@@ -29,7 +29,7 @@ export interface IUser extends IBaseEntity {
   role: USER_ROLES;
   name: IName;
   address: IAddress;
-  profile_pic?: string; //url of the profile picture
+  profile_pic?: string; //file name of the profile picture
 }
 
 export type IUserOptional = Partial<IUser>;
