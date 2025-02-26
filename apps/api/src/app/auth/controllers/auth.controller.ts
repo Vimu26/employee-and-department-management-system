@@ -38,7 +38,6 @@ export class AuthController {
     @LoggedIdentity() loggedUser: IIdentity
   ) {
     try {
-      console.log(requestBody, loggedUser);
       const newUser = await this.authDatabaseService.registerUser(
         requestBody,
         loggedUser

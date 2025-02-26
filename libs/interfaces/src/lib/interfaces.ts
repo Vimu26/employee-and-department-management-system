@@ -29,7 +29,7 @@ export interface IUser extends IBaseEntity {
   role: USER_ROLES;
   name: IName;
   address: IAddress;
-  profile_pic?: string; //url of the profile picture
+  profile_pic?: string; //file name of the profile picture
 }
 
 export type IUserOptional = Partial<IUser>;
@@ -99,4 +99,12 @@ export interface CommonResponse<T> {
 export interface CommonCheckRequest {
   success: boolean;
   error: string;
+}
+
+export interface IFiles extends Document {
+  _id?: Types.ObjectId;
+  filename: string;
+  originalname: string;
+  path: string;
+  mimetype: string;
 }

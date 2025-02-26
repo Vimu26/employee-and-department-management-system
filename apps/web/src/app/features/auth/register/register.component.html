@@ -2,7 +2,7 @@
   <div class="conatiner">
     <mat-card class="auth-card">
       <mat-card-title class="text-center mb-3">Register</mat-card-title>
-      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="mt-4">
+      <form [formGroup]="registerForm" class="mt-4">
         <div class="row">
           <div class="col-sm">
             <!-- First Name -->
@@ -120,6 +120,19 @@
           </mat-error>
         </mat-form-field>
 
+        <!-- Profile Picture -->
+        <div class="mb-4 d-flex align-items-center">
+          <!-- File Input on the left -->
+          <input
+            type="file"
+            class="form-control me-2"
+            (change)="onFileChange($event)"
+          />
+
+          <!-- Upload button on the right -->
+          <button class="btn btn-primary" (click)="uploadFile()">Upload</button>
+        </div>
+
         <!-- Address -->
         <div class="row">
           <div class="col-sm">
@@ -187,17 +200,18 @@
             </mat-form-field>
           </div>
         </div>
-
-        <button
-          mat-flat-button
-          color="primary"
-          type="submit"
-          [disabled]="registerForm.invalid"
-          class="w-100"
-        >
-          Register
-        </button>
       </form>
+
+      <button
+        mat-flat-button
+        color="primary"
+        type="submit"
+        (click)="onSubmit()"
+        [disabled]="registerForm.invalid"
+        class="w-100"
+      >
+        Register
+      </button>
 
       <div class="text-center mt-3">
         Already have an account? <a routerLink="/auth/login">Login</a>

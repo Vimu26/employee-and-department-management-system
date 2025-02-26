@@ -48,6 +48,10 @@ export class LoginComponent {
             console.log(response);
             this.router.navigate(['/app/launchpad']);
             localStorage.setItem('token', response.data.token);
+            localStorage.setItem('user', JSON.stringify({
+              ...response?.data?.user,
+              password: undefined, 
+            }));
           } else {
             this.snackBar.error(response?.message);
           }

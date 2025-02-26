@@ -31,7 +31,7 @@ export class User {
   password: string;
 
   @Prop()
-  profile_pic: string; //url of profile picture
+  profile_pic: string; //file name of profile picture
 
   @Prop({ enum: USER_ROLES, required: true, type: String })
   role: USER_ROLES;

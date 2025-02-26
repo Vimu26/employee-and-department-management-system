@@ -1,9 +1,19 @@
 <div class="layout">
   <!-- Sidebar -->
-  <div class="sidebar" [class.collapsed]="isCollapsed">
+  <div class="sidebar pt-5" [class.collapsed]="isCollapsed">
     <button class="toggle-btn" (click)="toggleSidebar()">
       <mat-icon>menu</mat-icon>
     </button>
+
+    <!-- Profile picture -->
+    <div class="profile-section">
+      <img
+        *ngIf="profilePic"
+        [src]="profilePic"
+        alt="https://i.pinimg.com/736x/d9/d8/8e/d9d88e3d1f74e2b8ced3df051cecb81d.jpg"
+        class="profile-pic"
+      />
+    </div>
 
     <ul class="nav flex-column">
       <li class="nav-item">
