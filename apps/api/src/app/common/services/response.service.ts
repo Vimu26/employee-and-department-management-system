@@ -27,4 +27,14 @@ export class ResponseService {
       data: null,
     };
   }
+
+  paginatedResponse<T>(data: any): CommonResponse<T> {
+    return {
+      statusCode: 200,
+      message : '',
+      success: true,
+      data: data?.data,
+      count:data?.total
+    };
+  }
 }
