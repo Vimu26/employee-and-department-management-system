@@ -12,7 +12,7 @@ export const departmentsRoutes: Routes = [
       import('./departments.component').then((m) => m.DepartmentsComponent),
   },
   {
-    path: 'create',
+    path: 'add',
     loadComponent: () =>
       import('./add-edit-departments/add-edit-departments.component').then(
         (m) => m.AddEditDepartmentsComponent

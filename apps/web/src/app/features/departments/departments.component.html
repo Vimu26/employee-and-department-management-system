@@ -1,1 +1,55 @@
-<p>departments works!</p>
+<div class="department-container">
+  <app-search-container
+    [inputFields]="inputFields"
+    (searchQuery)="handleSearchQuery($event)"
+  ></app-search-container>
+</div>
+
+<div class="container mt-4 dep-container">
+    <mat-accordion>
+        <mat-expansion-panel *ngFor="let department of pagedDepartments">
+          <mat-expansion-panel-header>
+            <div class="header-row">
+              <div class="key-value">
+                <span class="label">Name</span>
+                <span class="value">{{ department.name }}</span>
+              </div>
+              <div class="key-value">
+                <span class="label">Type</span>
+                <span class="value">{{ department.type }}</span>
+              </div>
+            </div>
+          </mat-expansion-panel-header>
+      
+          <div class="department-details">
+            <div class="department-row">
+              <div class="key-value">
+                <span class="label">Description</span>
+                <span class="value">{{ department.description }}</span>
+              </div>
+            </div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+      
+      
+      
+  <div class="paginator-container">
+    <mat-paginator
+      [length]="totalDepartments"
+      [pageSize]="10"
+      [pageSizeOptions]="[10, 20, 50]"
+      (page)="onPageChange($event)"
+    >
+    </mat-paginator>
+  </div>
+
+  <button
+    mat-flat-button
+    color="primary"
+    class="add-department-btn"
+    (click)="addDepartment()"
+  >
+    <mat-icon>add</mat-icon> Add Department
+  </button>
+</div>
