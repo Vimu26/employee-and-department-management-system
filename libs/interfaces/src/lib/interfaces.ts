@@ -5,6 +5,7 @@ import {
   DEPARTMENT_TYPE,
   DB_COLLECTION_NAMES,
   EMPLOYEE_STATUS,
+  CHIP_TYPES,
 } from '@employee-and-department-management-system/enums';
 import { Types } from 'mongoose';
 
@@ -107,4 +108,13 @@ export interface IFiles extends Document {
   originalname: string;
   path: string;
   mimetype: string;
+}
+
+export interface chipData {
+  label: string;
+  type: CHIP_TYPES;
+  key: string;
+  value: string;
+  placeHolder: string;
+  options?: any[];
 }
