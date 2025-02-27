@@ -76,7 +76,7 @@
         <div class="action-buttons d-flex justify-content-end gap-4 mt-2">
           <div class="toggle">
             <mat-slide-toggle
-              [checked]="employee.status === 'ACTIVE'"
+              [checked]="employee.status === EMPLOYEE_STATUS.ACTIVE"
               (change)="toggleStatus(employee, $event)"
             >
             </mat-slide-toggle>
