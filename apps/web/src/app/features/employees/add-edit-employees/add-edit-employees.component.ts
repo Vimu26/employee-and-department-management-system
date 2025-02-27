@@ -16,7 +16,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FileService } from '../../../common/services/files.service';
 import { SnackbarService } from '../../../common/services/snackbar.service';
 import { DepartmentService } from '../../departments/departments.service';
-import { IDepartmentsKeyValues, IEmployee } from '@employee-and-department-management-system/interfaces';
+import {
+  IDepartmentsKeyValues,
+  IEmployee,
+} from '@employee-and-department-management-system/interfaces';
 
 @Component({
   selector: 'app-add-edit-employees',
@@ -65,6 +68,44 @@ export class AddEditEmployeesComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadDepartments();
+    this.route.paramMap.subscribe((params) => {
+      this.empId = params.get('id');
+      if (this.empId) {
+        this.loadEmployeeDetails(this.empId);
+      }
+    });
+  }
+
+  loadEmployeeDetails(employeeId: string): void {
+    this.employeeService.getEmployeeById(employeeId).subscribe({
+      next: (res) => {
+        if (res.data?._id) {
+          const employee = res.data;
+          this.employeeForm.patchValue({
+            first_name: employee.name.first_name,
+            last_name: employee.name.last_name,
+            no: employee.address.no,
+            street1: employee.address.street1,
+            street2: employee.address.street2,
+            city: employee.address.city,
+            province: employee.address.province,
+            country: employee.address.country,
+            epf_no: employee.epf_no,
+            nic: employee.nic,
+            profile_pic: employee.profile_pic,
+            email: employee.email,
+            phone: employee.phone,
+            position: employee.position,
+            department_id: employee.department_id,
+          });
+
+          this.fileName = employee.profile_pic ?? '';
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching employee details:', err);
+      },
+    });
   }
 
   onFileChange(event: any): void {
@@ -102,7 +143,6 @@ export class AddEditEmployeesComponent implements OnInit {
   loadDepartments(): void {
     this.departmentService.getDepartmentList().subscribe({
       next: (res) => {
-        console.log('dep', res?.data);
         this.departments = res.data;
       },
       error: (err) => {
@@ -137,14 +177,33 @@ export class AddEditEmployeesComponent implements OnInit {
         department_id: formValue.department_id ?? '',
       };
 
-      this.employeeService.addEmployee(employeePayload).subscribe({
-        next: (res) => {
-          this.router.navigate(['/app/employees'])
-        },
-        error: (err) => {
-          console.error('Error adding employee:', err);
-        },
-      });
+      if (this.empId) {
+        this.employeeService
+          .updateEmployee(this.empId, employeePayload)
+          .subscribe({
+            next: (res) => {
+              this.snackbarService.success('Employee updated successfully!');
+              this.router.navigate(['/app/employees']);
+            },
+            error: (err) => {
+              console.error('Error updating employee:', err);
+              this.snackbarService.error('Error updating employee.');
+            },
+          });
+      } else {
+        this.employeeService.addEmployee(employeePayload).subscribe({
+          next: (res) => {
+            this.snackbarService.success('Employee added successfully!');
+            this.router.navigate(['/app/employees'], {
+              queryParams: { _id: this.empId },
+            });
+          },
+          error: (err) => {
+            console.error('Error adding employee:', err);
+            this.snackbarService.error('Error adding employee.');
+          },
+        });
+      }
     }
   }
 

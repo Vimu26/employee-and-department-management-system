@@ -44,11 +44,14 @@ export class EmployeeController {
       ...requestBody,
       status: EMPLOYEE_STATUS.ACTIVE,
       employee_id: emp_no?.employee_id,
-      epf_no : !requestBody?.epf_no ? null : requestBody?.epf_no
+      epf_no: !requestBody?.epf_no ? null : requestBody?.epf_no,
     };
-    return await this.employeeDatabaseService.addNewDocument(generatedEmployee, {
-      created_by: loggedUser._id?.toString(),
-    });
+    return await this.employeeDatabaseService.addNewDocument(
+      generatedEmployee,
+      {
+        created_by: loggedUser._id?.toString(),
+      }
+    );
   }
 
   @Get()
@@ -118,8 +121,9 @@ export class EmployeeController {
   @Get(':id')
   async getEmployee(
     @Param() params: { id: string }
-  ): Promise<IEmployee | null> {
-    return this.employeeDatabaseService.findById(params?.id);
+  ): Promise<CommonResponse<IEmployee | null>> {
+    const docs = await this.employeeDatabaseService.findById(params?.id);
+    return { data: docs };
   }
 
   @Get('generate/emp-no')
