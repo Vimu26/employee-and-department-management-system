@@ -1,4 +1,5 @@
 .emp-container {
+  margin-bottom: 8vh;
   .mat-expansion-panel-header {
     display: flex;
     align-items: center;
@@ -81,7 +82,10 @@
   }
 
   .add-employee-btn {
-    margin-top: 15px;
+    position: fixed;
+    bottom: 8vh;
+    right: 20px;
+    z-index: 1000;
   }
 
   .paginator-container {

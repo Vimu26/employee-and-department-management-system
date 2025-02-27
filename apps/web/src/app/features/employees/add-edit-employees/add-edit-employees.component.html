@@ -47,11 +47,7 @@
               <div class="col-sm">
                 <mat-form-field class="w-100 mb-3" appearance="outline">
                   <mat-label>no</mat-label>
-                  <input
-                    matInput
-                    formControlName="no"
-                    placeholder="Enter no"
-                  />
+                  <input matInput formControlName="no" placeholder="Enter no" />
                   <mat-error
                     *ngIf="employeeForm.controls.no.hasError('required')"
                   >
@@ -221,28 +217,28 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="w-100 mb-3">
-                <mat-label>Position</mat-label>
-                <mat-select formControlName="position">
-                  @for (position of jobPositions; track position) {
-                    <mat-option [value]="position">{{ position }}</mat-option>
-                  }
-                </mat-select>
-              </mat-form-field>
-              
-              
+              <mat-label>Position</mat-label>
+              <mat-select formControlName="position">
+                @for (position of jobPositions; track position) {
+                <mat-option [value]="position">{{ position }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
 
             <mat-form-field class="w-100 mb-3" appearance="outline">
-                <mat-label>Department</mat-label>
-                <mat-select formControlName="department_id">
-                  <mat-option *ngFor="let dept of departments" [value]="dept._id">
-                    {{ dept.name }}
-                  </mat-option>
-                </mat-select>
-                <mat-error *ngIf="employeeForm.controls.department_id.hasError('required')">
-                  Department is required
-                </mat-error>
-              </mat-form-field>
-              
+              <mat-label>Department</mat-label>
+              <mat-select formControlName="department_id">
+                <mat-option *ngFor="let dept of departments" [value]="dept._id">
+                  {{ dept.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error
+                *ngIf="employeeForm.controls.department_id.hasError('required')"
+              >
+                Department is required
+              </mat-error>
+            </mat-form-field>
+
             <div class="text-end">
               <button
                 mat-button

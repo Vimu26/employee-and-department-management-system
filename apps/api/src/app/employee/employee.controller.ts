@@ -60,15 +60,17 @@ export class EmployeeController {
     @Query() query: EmployeeQueryDto
   ): Promise<CommonResponse<IEmployee[]>> {
     const options = { limit: query?.size, skip: query?.start };
-    console.log(query);
     const filters: FilterQuery<IEmployeeOptional> = {};
 
     if (query?._id) {
       filters['_id'] = query._id;
     }
 
-    if (query?.name) {
-      filters['name'] = { $regex: query.name, $options: 'i' };
+    if (query?.f_name) {
+      filters['name.first_name'] = {
+        $regex: `^${query.f_name}$`,
+        $options: 'i',
+      };
     }
 
     if (query?.address) {

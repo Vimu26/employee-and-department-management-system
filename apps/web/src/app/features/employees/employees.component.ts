@@ -18,10 +18,11 @@ import {
 import { HttpParams } from '@angular/common/http';
 import { EmployeesService } from './employees.service';
 import { FileService } from '../../common/services/files.service';
+import { SearchContainerComponent } from '../../components/search-container/search-container.component';
 
 @Component({
   selector: 'app-employees',
-  imports: [CommonModule, MaterialModule],
+  imports: [CommonModule, MaterialModule, SearchContainerComponent],
   standalone: true,
   templateUrl: './employees.component.html',
   styleUrls: ['./employees.component.scss'],
@@ -43,7 +44,7 @@ export class EmployeesComponent implements OnInit {
     {
       label: 'First Name',
       type: CHIP_TYPES.TEXT,
-      key: 'name.first_name',
+      key: 'f_name',
       value: '',
       placeHolder: 'John',
     },
@@ -144,6 +145,11 @@ export class EmployeesComponent implements OnInit {
         (department) => department?._id?.toString() === id?.toString()
       )?.name ?? '-'
     );
+  }
+
+  handleSearchQuery(query: { [key: string]: string }) {
+    this.searchQuery = query;
+    this.getAllEmployees();
   }
 
   getProfilePic(name: string): string {

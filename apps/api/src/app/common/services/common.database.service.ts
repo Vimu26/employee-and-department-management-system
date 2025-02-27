@@ -64,7 +64,7 @@ export abstract class CommonDatabaseService<T extends IBaseEntity> {
     };
 
     const oldDocOnDb = await this.mongooseModel.findOne(filter).exec();
-    if (!oldDocOnDb) return null; 
+    if (!oldDocOnDb) return null;
 
     const newDocOnDb = await this.mongooseModel
       .findOneAndUpdate(filter, newDoc, { new: true })

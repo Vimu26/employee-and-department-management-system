@@ -24,19 +24,19 @@ export class Employee {
   @Prop({ type: BaseAddressSchemaContent, required: true })
   address: IAddress;
 
-  @Prop() 
+  @Prop()
   epf_no: string;
 
   @Prop({ required: true, unique: true })
   nic: string;
 
-  @Prop({unique: true })
+  @Prop({ unique: true })
   employee_id: string;
 
   @Prop({ enum: EMPLOYEE_STATUS, type: String })
   status: EMPLOYEE_STATUS;
 
-  @Prop({ unique: false }) 
+  @Prop({ unique: false })
   profile_pic: string; //url of the image
 
   @Prop({ required: true, unique: true })

@@ -1,3 +1,10 @@
+<div class="department-container">
+  <app-search-container
+    [inputFields]="inputFields"
+    (searchQuery)="handleSearchQuery($event)"
+  ></app-search-container>
+</div>
+
 <div class="container mt-4 emp-container" style="padding: 2rem">
   <mat-accordion multi>
     <mat-expansion-panel *ngFor="let employee of employees; let i = index">
@@ -56,7 +63,8 @@
             <div class="key-value">
               <strong>Address</strong>
               <span
-                >{{ employee.address.no }},{{ employee.address.street1 }}, {{ employee.address.city }},
+                >{{ employee.address.no }},{{ employee.address.street1 }},
+                {{ employee.address.city }},
                 {{ employee.address.country }}</span
               >
             </div>
@@ -73,16 +81,15 @@
             >
             </mat-slide-toggle>
           </div>
-        
+
           <button mat-icon-button (click)="editEmployee(employee)">
             <mat-icon>edit</mat-icon>
           </button>
-        
+
           <button mat-icon-button (click)="deleteEmployee(employee, i)">
             <mat-icon>delete</mat-icon>
           </button>
         </div>
-        
       </div>
     </mat-expansion-panel>
   </mat-accordion>
@@ -96,13 +103,12 @@
     >
     </mat-paginator>
   </div>
+  <button
+    mat-flat-button
+    color="primary"
+    class="add-employee-btn"
+    (click)="addEmployee()"
+  >
+    <mat-icon>add</mat-icon> Add Employee
+  </button>
 </div>
-
-<button
-  mat-flat-button
-  color="primary"
-  class="add-employee-btn"
-  (click)="addEmployee()"
->
-  <mat-icon>add</mat-icon> Add Employee
-</button>

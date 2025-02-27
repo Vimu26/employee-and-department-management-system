@@ -1,7 +1,7 @@
 .paginator-container {
+  margin-top: 20px;
   display: flex;
-  justify-content: flex-start;
-  margin-top: 10px;
+  justify-content: center;
 }
 
 .add-department-btn {
@@ -16,45 +16,45 @@
 }
 
 .header-row {
-    display: flex;
-    justify-content: space-between; 
-    width: 100%;
-  }
-  
-  .label {
-    font-size: 12px;
-  }
-  
-  .department-details {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .department-row {
-    display: flex;
-    justify-content: space-between;
-  }
-  
-  .key-value {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 48%;
-  }
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
 
-  mat-expansion-panel {
-    padding-top: 0.75rem;
-    padding-bottom: 0.75rem; 
-  }
-  
-  .action-buttons {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 8px;
-    width: 100%;
-  }
-  
-  .spacer {
-    flex-grow: 1;
-  }
+.label {
+  font-size: 12px;
+}
+
+.department-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.department-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.key-value {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 48%;
+}
+
+mat-expansion-panel {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 8px;
+  width: 100%;
+}
+
+.spacer {
+  flex-grow: 1;
+}
