@@ -93,4 +93,11 @@ export class ActivitiesComponent implements OnInit {
   getActivitiesCount() {
     return this.totalActivities ?? 0;
   }
+
+  // createDescription(activity:IActivityLog){
+  //  console.log(activity)
+  //  if(activity?.parent){
+  //   return `${activity?.parent?.}`
+  //  }
+  // }
 }

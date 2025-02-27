@@ -79,8 +79,9 @@ export class ActivityDatabaseService {
     limit: number,
     skip: number
   ): Promise<{ data: IActivityLog[]; count: number }> {
-    const size = Number(limit)
-    const start  = Number(skip)
+    const size = Number(limit);
+    const start = Number(skip);
+
     const aggregation: PipelineStage[] = [
       {
         $match: {
@@ -131,6 +132,11 @@ export class ActivityDatabaseService {
         },
       },
       {
+        $sort: {
+          created_on: -1,
+        },
+      },
+      {
         $facet: {
           data: [
             {
@@ -150,7 +156,7 @@ export class ActivityDatabaseService {
       {
         $project: {
           data: 1,
-          count: { $arrayElemAt: ['$count.totalCount', 0] }, 
+          count: { $arrayElemAt: ['$count.totalCount', 0] },
         },
       },
     ];
@@ -158,8 +164,8 @@ export class ActivityDatabaseService {
     const result = await this.activityLogsModel.aggregate(aggregation);
 
     return {
-      data: result[0].data, 
-      count: result[0].count || 0, 
+      data: result[0]?.data || [],
+      count: result[0]?.count || 0,
     };
   }
 }
