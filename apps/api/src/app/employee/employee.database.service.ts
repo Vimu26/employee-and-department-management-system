@@ -22,11 +22,21 @@ export class EmployeeDatabaseService extends CommonDatabaseService<IEmployee> {
   }
 
   async generateEmployeeId(): Promise<{ employee_id: string }> {
-    const employeeCount = await this.employeeModel.countDocuments();
-    const nextNumber = employeeCount + 1;
+    const latestEmployee = await this.employeeModel
+      .findOne({}, { employee_id: 1 }) 
+      .sort({ created_on: -1 }) 
+      .lean(); 
+    let nextNumber = 1; 
+  
+    if (latestEmployee?.employee_id) {
+      const lastNumber = parseInt(latestEmployee.employee_id.replace('EMP', ''), 10);
+      nextNumber = lastNumber + 1;
+    }
+  
     const formattedNumber = String(nextNumber).padStart(4, '0');
     const employeeId = `EMP${formattedNumber}`;
-
+    
     return { employee_id: employeeId };
   }
+  
 }

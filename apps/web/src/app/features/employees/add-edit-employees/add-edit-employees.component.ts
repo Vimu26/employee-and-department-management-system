@@ -137,7 +137,7 @@ export class AddEditEmployeesComponent implements OnInit {
   }
 
   onCancel() {
-    //
+    this.router.navigate(['/app/employees']);
   }
 
   loadDepartments(): void {
