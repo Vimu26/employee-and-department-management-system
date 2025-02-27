@@ -6,34 +6,54 @@
 </div>
 
 <div class="container mt-4 dep-container">
-    <mat-accordion>
-        <mat-expansion-panel *ngFor="let department of pagedDepartments">
-          <mat-expansion-panel-header>
-            <div class="header-row">
-              <div class="key-value">
-                <span class="label">Name</span>
-                <span class="value">{{ department.name }}</span>
-              </div>
-              <div class="key-value">
-                <span class="label">Type</span>
-                <span class="value">{{ department.type }}</span>
-              </div>
-            </div>
-          </mat-expansion-panel-header>
-      
-          <div class="department-details">
-            <div class="department-row">
-              <div class="key-value">
-                <span class="label">Description</span>
-                <span class="value">{{ department.description }}</span>
-              </div>
-            </div>
+  <mat-accordion>
+    <mat-expansion-panel
+      *ngFor="let department of pagedDepartments; let i = index"
+    >
+      <mat-expansion-panel-header>
+        <div class="header-row">
+          <div class="key-value">
+            <span class="label">Name</span>
+            <span class="value">{{ department.name }}</span>
           </div>
-        </mat-expansion-panel>
-      </mat-accordion>
-      
-      
-      
+          <div class="key-value">
+            <span class="label">Type</span>
+            <span class="value">{{ department.type }}</span>
+          </div>
+        </div>
+      </mat-expansion-panel-header>
+
+      <div class="department-details">
+        <div class="department-row">
+          <div class="key-value">
+            <span class="label">Description</span>
+            <span class="value">{{ department.description }}</span>
+          </div>
+        </div>
+      </div>
+
+      <mat-divider class="mt-2"></mat-divider>
+
+      <div class="action-buttons">
+        <span class="spacer"></span>
+        <button
+          mat-icon-button
+          color="primary"
+          (click)="editDepartment(department)"
+        >
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="deleteDepartment(department, i)"
+        >
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
   <div class="paginator-container">
     <mat-paginator
       [length]="totalDepartments"

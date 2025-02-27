@@ -14,9 +14,9 @@ export interface IEmployee extends IBaseEntity {
   address: IAddress;
   epf_no?: string;
   nic: string;
-  employee_id: string;
+  employee_id?: string;
   profile_pic?: string;
-  status: EMPLOYEE_STATUS;
+  status?: EMPLOYEE_STATUS;
   email: string;
   phone: string;
   position: JOB_POSITION;
@@ -52,6 +52,9 @@ export interface IActivityLog extends IBaseEntity {
   parent_id?: Types.ObjectId | string;
   action?: ACTIVITY_ACTIONS;
   model?: DB_COLLECTION_NAMES;
+  lastModifiedByUser?: IUser;
+  createdByUser?: IUser;
+  parent?: any;
 }
 
 export type IOptionalActivityLogs = Partial<IActivityLog>;
@@ -90,9 +93,9 @@ export interface IAddress {
 }
 
 export interface CommonResponse<T> {
-  statusCode: number;
-  message: string;
-  success: boolean;
+  statusCode?: number;
+  message?: string;
+  success?: boolean;
   data: T;
   count?: number;
 }
@@ -117,4 +120,9 @@ export interface chipData {
   value: string;
   placeHolder: string;
   options?: any[];
+}
+
+export interface IDepartmentsKeyValues {
+  _id: string;
+  name: string;
 }

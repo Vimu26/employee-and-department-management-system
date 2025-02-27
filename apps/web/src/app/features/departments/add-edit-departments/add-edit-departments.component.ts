@@ -8,7 +8,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { DEPARTMENT_TYPE } from '@employee-and-department-management-system/enums';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DepartmentService } from '../departments.service';
 import { IDepartment } from '@employee-and-department-management-system/interfaces';
 
@@ -19,7 +19,7 @@ import { IDepartment } from '@employee-and-department-management-system/interfac
   templateUrl: './add-edit-departments.component.html',
   styleUrl: './add-edit-departments.component.scss',
 })
-export class AddEditDepartmentsComponent {
+export class AddEditDepartmentsComponent implements OnInit {
   departmentForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
     type: new FormControl('', [Validators.required]),
@@ -27,11 +27,37 @@ export class AddEditDepartmentsComponent {
   });
 
   departmentTypes = Object.values(DEPARTMENT_TYPE);
+  departmentId: string | null = null;
 
   constructor(
     private router: Router,
-    private departmentService: DepartmentService
+    private departmentService: DepartmentService,
+    private route: ActivatedRoute
   ) {}
+
+  ngOnInit() {
+    this.route.paramMap.subscribe((params) => {
+      this.departmentId = params.get('id');
+      if (this.departmentId) {
+        this.loadDepartmentDetails(this.departmentId);
+      }
+    });
+  }
+
+  async loadDepartmentDetails(id: string) {
+    this.departmentService.getDepartmentById(id).subscribe({
+      next: (department) => {
+        this.departmentForm.patchValue({
+          name: department?.data?.name,
+          type: department?.data?.type,
+          description: department?.data?.description,
+        });
+      },
+      error: (error) => {
+        console.log('Error fetching department:', error);
+      },
+    });
+  }
 
   save() {
     if (this.departmentForm.valid) {
@@ -41,18 +67,35 @@ export class AddEditDepartmentsComponent {
           (this.departmentForm.controls.type.value as DEPARTMENT_TYPE) ?? '',
         description: this.departmentForm.controls.description.value ?? '',
       };
-      this.departmentService.addDepartment(department).subscribe({
-        next: (res) => {
-          this.router.navigate(['app/departments'], {
-            queryParams: {
-              _id: res?.data?._id,
+      if (!this.departmentId) {
+        this.departmentService.addDepartment(department).subscribe({
+          next: (res) => {
+            this.router.navigate(['app/departments'], {
+              queryParams: {
+                _id: res?.data?._id?.toString(),
+              },
+            });
+          },
+          error: (err) => {
+            console.log(err);
+          },
+        });
+      } else {
+        this.departmentService
+          .updateDepartment(this.departmentId, department)
+          .subscribe({
+            next: (res) => {
+              this.router.navigate(['app/departments'], {
+                queryParams: {
+                  _id: res?.data?._id?.toString(),
+                },
+              });
+            },
+            error: (err) => {
+              console.log('Error updating department:', err);
             },
           });
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
+      }
     }
   }
 

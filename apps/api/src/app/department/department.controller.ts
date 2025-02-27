@@ -16,6 +16,7 @@ import { DepartmentDatabaseService } from './department.database.service';
 import {
   CommonResponse,
   IDepartment,
+  IDepartmentsKeyValues,
   IIdentity,
 } from '@employee-and-department-management-system/interfaces';
 import { JwtAuthGuard } from '../auth/guards/auth.guard';
@@ -53,8 +54,9 @@ export class DepartmentController {
     @LoggedIdentity() loggedUser: IIdentity,
     @Query() query: DepartmentQueryDto
   ): Promise<CommonResponse<IDepartment[]>> {
-    const options = { limit: query?.size ?? 10, skip: query?.start ?? 0 };
+    const options = { limit: query?.size, skip: query?.start };
     const filters: FilterQuery<IDepartment> = {};
+    console.log(query);
     if (query?.name) {
       filters['name'] = { $regex: query.name, $options: 'i' };
     }
@@ -77,14 +79,23 @@ export class DepartmentController {
 
   @Get(':id')
   async getDepartment(
-    @Param('id') params: { id: string }
-  ): Promise<IDepartment | null> {
-    return this.departmentDatabaseService.findById(params?.id);
+    @Param() params: { id: string }
+  ): Promise<CommonResponse<IDepartment>> {
+    const results = await this.departmentDatabaseService.findById(params?.id);
+    return { data: results };
+  }
+
+  @Get('department/list')
+  async getDepartmentList(
+    @LoggedIdentity() loggedUser: IIdentity
+  ): Promise<CommonResponse<IDepartmentsKeyValues[]>> {
+    const doc = await this.departmentDatabaseService.getDepartmentList();
+    return { data: doc };
   }
 
   @Patch(':id')
   async updateDepartment(
-    @Param('id') params: { id: string },
+    @Param() params: { id: string },
     @Body() requestBody: UpdateDepartmentDto,
     @LoggedIdentity() loggedUser: IIdentity
   ): Promise<IDepartment | null> {
@@ -97,6 +108,7 @@ export class DepartmentController {
     const updatedDepartment: IDepartment = {
       ...foundDepartment,
       ...requestBody,
+      _id: foundDepartment?._id,
     };
 
     return this.departmentDatabaseService.updateDocument(updatedDepartment, {
@@ -106,9 +118,10 @@ export class DepartmentController {
 
   @Delete(':id')
   async deleteDepartment(
-    @Param('id') params: { id: string },
+    @Param() params: { id: string },
     @LoggedIdentity() loggedUser: IIdentity
   ): Promise<IDepartment | null> {
+    console.log(params.id);
     const foundDepartment = await this.departmentDatabaseService.findById(
       params?.id
     );

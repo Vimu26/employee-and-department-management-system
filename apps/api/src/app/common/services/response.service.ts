@@ -31,10 +31,10 @@ export class ResponseService {
   paginatedResponse<T>(data: any): CommonResponse<T> {
     return {
       statusCode: 200,
-      message : '',
+      message: '',
       success: true,
       data: data?.data,
-      count:data?.total
+      count: data?.total,
     };
   }
 }

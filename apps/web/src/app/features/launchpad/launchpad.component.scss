@@ -1,0 +1,93 @@
+.welcome-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(to right, #ffffff, #8fa5f3);
+}
+
+.welcome-card {
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+  background: #fff;
+  text-align: center;
+  transition: transform 0.3s ease-in-out;
+  animation: slideUp 1s ease-out;
+}
+
+.welcome-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+
+.avatar-container {
+  margin-right: 12px;
+  font-size: 48px;
+}
+
+.user-icon {
+  font-size: 60px;
+  color: #1976d2;
+}
+
+.welcome-buttons button {
+  margin: 15px 10px;
+  font-size: 16px;
+  padding: 10px 20px;
+}
+
+.decorative-shape {
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 40px;
+  color: #ff6347;
+}
+
+.emoji-icon {
+  animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.welcome-footer {
+  margin-top: 30px;
+  text-align: center;
+  color: #757575;
+  font-size: 16px;
+}
+
+.welcome-footer small {
+  font-size: 14px;
+  color: #aaa;
+}
+
+@media (max-width: 768px) {
+  .welcome-card {
+    padding: 20px;
+  }
+
+  .emoji-icon {
+    font-size: 30px;
+  }
+}

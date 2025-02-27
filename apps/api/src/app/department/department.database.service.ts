@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { IDepartment } from '@employee-and-department-management-system/interfaces';
+import {
+  IDepartment,
+  IDepartmentsKeyValues,
+} from '@employee-and-department-management-system/interfaces';
 import { DepartmentModel } from './department.model';
 import { DB_COLLECTION_NAMES } from '@employee-and-department-management-system/enums';
 import { InjectModel } from '@nestjs/mongoose';
@@ -11,13 +14,24 @@ import { ActivityDatabaseService } from '../activity/activity.database.service';
 export class DepartmentDatabaseService extends CommonDatabaseService<IDepartment> {
   constructor(
     @InjectModel(DB_COLLECTION_NAMES.DEPARTMENTS)
-    private employeeModel: Model<DepartmentModel>,
+    private departmentModel: Model<DepartmentModel>,
     activityLogsDatabaseService: ActivityDatabaseService
   ) {
     super(
       activityLogsDatabaseService,
-      employeeModel,
+      departmentModel,
       DB_COLLECTION_NAMES.DEPARTMENTS
     );
+  }
+
+  async getDepartmentList(): Promise<IDepartmentsKeyValues[]> {
+    return await this.departmentModel.aggregate([
+      {
+        $project: {
+          _id: 1,
+          name: 1,
+        },
+      },
+    ]);
   }
 }

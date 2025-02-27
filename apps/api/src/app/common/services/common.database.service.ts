@@ -64,6 +64,7 @@ export abstract class CommonDatabaseService<T extends IBaseEntity> {
     };
 
     const oldDocOnDb = await this.mongooseModel.findOne(filter).exec();
+    if (!oldDocOnDb) return null;
 
     const newDocOnDb = await this.mongooseModel
       .findOneAndUpdate(filter, newDoc, { new: true })
@@ -99,7 +100,7 @@ export abstract class CommonDatabaseService<T extends IBaseEntity> {
     filter: FilterQuery<T> = {},
     options: QueryOptions<T> = {}
   ): Promise<{ total: number; data: T[] }> {
-    const { limit = 10, skip = 0 } = options;
+    const { limit, skip } = options;
 
     const total = await this.mongooseModel.countDocuments(filter).exec();
 

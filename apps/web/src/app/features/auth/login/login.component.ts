@@ -56,7 +56,7 @@ export class LoginComponent {
               })
             );
           } else {
-            this.snackBar.error(response?.message);
+            this.snackBar.error(response?.message ?? '');
           }
         },
         error: (err) => {

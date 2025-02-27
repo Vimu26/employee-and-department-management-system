@@ -30,13 +30,13 @@ export class Employee {
   @Prop({ required: true, unique: true })
   nic: string;
 
-  @Prop({ required: true, unique: true })
+  @Prop({ unique: true })
   employee_id: string;
 
-  @Prop({ enum: EMPLOYEE_STATUS, required: true, type: String })
+  @Prop({ enum: EMPLOYEE_STATUS, type: String })
   status: EMPLOYEE_STATUS;
 
-  @Prop()
+  @Prop({ unique: false })
   profile_pic: string; //url of the image
 
   @Prop({ required: true, unique: true })

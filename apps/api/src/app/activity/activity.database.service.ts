@@ -73,4 +73,91 @@ export class ActivityDatabaseService {
 
     return results;
   }
+
+  async getActivityLogWithUserData(
+    filters: any,
+    limit: number,
+    skip: number
+  ): Promise<{ data: IActivityLog[]; count: number }> {
+    const aggregation: PipelineStage[] = [
+      {
+        $match: {
+          ...filters,
+        },
+      },
+      {
+        $addFields: {
+          created_by: { $toObjectId: '$created_by' },
+          parent_id: { $toObjectId: '$parent_id' },
+          last_modified_by: { $toObjectId: '$last_modified_by' },
+        },
+      },
+      {
+        $lookup: {
+          from: DB_COLLECTION_NAMES.USERS,
+          localField: 'created_by',
+          foreignField: '_id',
+          as: 'createdByUser',
+        },
+      },
+      {
+        $unwind: { path: '$createdByUser', preserveNullAndEmptyArrays: true },
+      },
+      {
+        $lookup: {
+          from: DB_COLLECTION_NAMES.EMPLOYEES,
+          localField: 'parent_id',
+          foreignField: '_id',
+          as: 'parent',
+        },
+      },
+      {
+        $unwind: { path: '$parent', preserveNullAndEmptyArrays: true },
+      },
+      {
+        $lookup: {
+          from: DB_COLLECTION_NAMES.USERS,
+          localField: 'last_modified_by',
+          foreignField: '_id',
+          as: 'lastModifiedByUser',
+        },
+      },
+      {
+        $unwind: {
+          path: '$lastModifiedByUser',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $facet: {
+          data: [
+            {
+              $skip: skip,
+            },
+            {
+              $limit: limit,
+            },
+          ],
+          count: [
+            {
+              $count: 'totalCount',
+            },
+          ],
+        },
+      },
+      {
+        $project: {
+          data: 1,
+          count: { $arrayElemAt: ['$count.totalCount', 0] }, // Access the total count
+        },
+      },
+    ];
+
+    const result = await this.activityLogsModel.aggregate(aggregation);
+
+    return {
+      data: result[0].data, // The activity log data
+      count: result[0].count || 0, // The total count of activity logs
+    };
+  }
 }

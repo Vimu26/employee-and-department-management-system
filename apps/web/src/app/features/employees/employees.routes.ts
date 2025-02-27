@@ -12,7 +12,7 @@ export const employeesRoutes: Routes = [
       import('./employees.component').then((m) => m.EmployeesComponent),
   },
   {
-    path: 'create',
+    path: 'add',
     loadComponent: () =>
       import('./add-edit-employees/add-edit-employees.component').then(
         (m) => m.AddEditEmployeesComponent
