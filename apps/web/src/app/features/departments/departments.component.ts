@@ -62,7 +62,7 @@ export class DepartmentsComponent implements OnInit {
     private router: Router,
     private departmentService: DepartmentService,
     private activatedRoute: ActivatedRoute,
-       private snackBar: SnackbarService,
+    private snackBar: SnackbarService
   ) {}
 
   ngOnInit() {
@@ -115,23 +115,25 @@ export class DepartmentsComponent implements OnInit {
   }
 
   editDepartment(department: IDepartment) {
-    if(!department?._id) return
+    if (!department?._id) return;
     this.router.navigate([`/app/departments/edit/${department?._id}`]);
   }
 
   deleteDepartment(department: IDepartment, index: number) {
     if (department?._id) {
-      console.log(department._id.toString())
-      this.departmentService.deleteDepartment(department._id.toString()).subscribe({
-        next: () => {
-          this.pagedDepartments.splice(index, 1);
-          this.getAllDepartments();
-          this.snackBar.success("Department Deleted Successfully!")
-        },
-        error: (error) => {
-          console.error('Error deleting department:', error);
-        },
-      });
+      console.log(department._id.toString());
+      this.departmentService
+        .deleteDepartment(department._id.toString())
+        .subscribe({
+          next: () => {
+            this.pagedDepartments.splice(index, 1);
+            this.getAllDepartments();
+            this.snackBar.success('Department Deleted Successfully!');
+          },
+          error: (error) => {
+            console.error('Error deleting department:', error);
+          },
+        });
     }
   }
 }

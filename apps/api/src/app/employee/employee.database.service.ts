@@ -20,4 +20,14 @@ export class EmployeeDatabaseService extends CommonDatabaseService<IEmployee> {
       DB_COLLECTION_NAMES.EMPLOYEES
     );
   }
+
+  async generateEmployeeId(): Promise<{ employee_id: string }> {
+    const employeeCount = await this.employeeModel.countDocuments();
+    const nextNumber = employeeCount + 1;
+    const formattedNumber = String(nextNumber).padStart(4, '0'); 
+    const employeeId = `EMP${formattedNumber}`;
+    
+    return { employee_id: employeeId };
+  }
+  
 }

@@ -16,6 +16,7 @@ import { DepartmentDatabaseService } from './department.database.service';
 import {
   CommonResponse,
   IDepartment,
+  IDepartmentsKeyValues,
   IIdentity,
 } from '@employee-and-department-management-system/interfaces';
 import { JwtAuthGuard } from '../auth/guards/auth.guard';
@@ -53,8 +54,9 @@ export class DepartmentController {
     @LoggedIdentity() loggedUser: IIdentity,
     @Query() query: DepartmentQueryDto
   ): Promise<CommonResponse<IDepartment[]>> {
-    const options = { limit: query?.size ?? 10, skip: query?.start ?? 0 };
+    const options = { limit: query?.size, skip: query?.start };
     const filters: FilterQuery<IDepartment> = {};
+    console.log(query);
     if (query?.name) {
       filters['name'] = { $regex: query.name, $options: 'i' };
     }
@@ -83,6 +85,14 @@ export class DepartmentController {
     return { data: results };
   }
 
+  @Get('department/list')
+  async getDepartmentList(
+    @LoggedIdentity() loggedUser: IIdentity
+  ): Promise<CommonResponse<IDepartmentsKeyValues[]>> {
+    const doc = await this.departmentDatabaseService.getDepartmentList();
+    return { data: doc };
+  }
+
   @Patch(':id')
   async updateDepartment(
     @Param() params: { id: string },
@@ -98,7 +108,7 @@ export class DepartmentController {
     const updatedDepartment: IDepartment = {
       ...foundDepartment,
       ...requestBody,
-      _id : foundDepartment?._id
+      _id: foundDepartment?._id,
     };
 
     return this.departmentDatabaseService.updateDocument(updatedDepartment, {

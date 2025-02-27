@@ -1,1 +1,108 @@
-<p>employees works!</p>
+<div class="container mt-4 emp-container" style="padding: 2rem">
+  <mat-accordion multi>
+    <mat-expansion-panel *ngFor="let employee of employees; let i = index">
+      <mat-expansion-panel-header class="header container">
+        <div class="header-grid">
+          <mat-icon
+            mat-expansion-panel-header
+            aria-label="Profile Picture"
+            class="profile-pic"
+          >
+            <img
+              class="profile-pic"
+              [src]="getProfilePic(employee?.profile_pic ?? '')"
+              alt="Profile Picture"
+            />
+          </mat-icon>
+
+          <div class="employee-name-section">
+            <strong>Name</strong>
+            <span
+              >{{ employee.name?.first_name }}
+              {{ employee.name?.last_name }}</span
+            >
+          </div>
+
+          <div class="employee-status-section">
+            <strong>Status</strong>
+            <span>{{ employee.status }}</span>
+          </div>
+        </div>
+      </mat-expansion-panel-header>
+
+      <div class="employee-details">
+        <div class="row">
+          <div class="col">
+            <div class="key-value">
+              <strong>Employee ID</strong>
+              <span>{{ employee.employee_id }}</span>
+            </div>
+          </div>
+          <div class="col">
+            <div class="key-value">
+              <strong>Position</strong>
+              <span>{{ employee.position }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="key-value">
+              <strong>Department</strong>
+              <span>{{ getDepartmentName(employee.department_id) }}</span>
+            </div>
+          </div>
+          <div class="col">
+            <div class="key-value">
+              <strong>Address</strong>
+              <span
+                >{{ employee.address?.no }},{{ employee.address?.street1 }}, {{ employee.address?.city }},
+                {{ employee.address?.country }}</span
+              >
+            </div>
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons d-flex justify-content-end gap-4 mt-2">
+          <div class="toggle">
+            <mat-slide-toggle
+              [checked]="employee.status === 'ACTIVE'"
+              (change)="toggleStatus(employee, $event)"
+            >
+            </mat-slide-toggle>
+          </div>
+        
+          <button mat-icon-button (click)="editEmployee(employee)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        
+          <button mat-icon-button (click)="deleteEmployee(employee, i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+        
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <div class="paginator-container">
+    <mat-paginator
+      [length]="totalEmployees"
+      [pageSize]="10"
+      [pageSizeOptions]="[10, 20, 50]"
+      (page)="onPageChange($event)"
+    >
+    </mat-paginator>
+  </div>
+</div>
+
+<button
+  mat-flat-button
+  color="primary"
+  class="add-employee-btn"
+  (click)="addEmployee()"
+>
+  <mat-icon>add</mat-icon> Add Employee
+</button>

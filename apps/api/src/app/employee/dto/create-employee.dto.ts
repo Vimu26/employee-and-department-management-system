@@ -30,7 +30,7 @@ export class CreateEmployeeDto implements IEmployee {
   @IsString()
   epf_no: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   employee_id: string; //This must generate according to count of the employees
 
@@ -38,7 +38,7 @@ export class CreateEmployeeDto implements IEmployee {
   @IsString()
   nic: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsEnum(EMPLOYEE_STATUS)
   status: EMPLOYEE_STATUS;
 

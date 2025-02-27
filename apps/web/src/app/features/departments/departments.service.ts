@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import {
   CommonResponse,
   IDepartment,
+  IDepartmentsKeyValues,
 } from '@employee-and-department-management-system/interfaces';
 
 @Injectable({
@@ -15,15 +16,22 @@ export class DepartmentService {
   constructor(private http: HttpClient) {}
 
   // Get all departments
-  getDepartments(params:HttpParams): Observable<CommonResponse<IDepartment[]>> {
+  getDepartments(
+    params: HttpParams
+  ): Observable<CommonResponse<IDepartment[]>> {
     return this.http.get<CommonResponse<IDepartment[]>>(this.apiURL, {
-      params: params
+      params: params,
     });
   }
-  
+
+  getDepartmentList(): Observable<CommonResponse<IDepartmentsKeyValues[]>> {
+    return this.http.get<CommonResponse<IDepartmentsKeyValues[]>>(
+      `${this.apiURL}/department/list`
+    );
+  }
 
   // Get department by ID
-   getDepartmentById(id: string): Observable<CommonResponse<IDepartment>> {
+  getDepartmentById(id: string): Observable<CommonResponse<IDepartment>> {
     return this.http.get<CommonResponse<IDepartment>>(`${this.apiURL}/${id}`);
   }
 

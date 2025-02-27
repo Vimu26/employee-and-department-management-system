@@ -1,0 +1,97 @@
+.emp-container {
+  .mat-expansion-panel-header {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 2rem;
+  }
+
+  .header-grid {
+    display: grid;
+    grid-template-columns: 0.8fr 1fr 0.8fr;
+    align-items: center;
+    width: 100%;
+  }
+
+  .profile-pic {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .employee-name-section {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+
+  .employee-name-section strong {
+    font-size: 12px;
+  }
+
+  .employee-name-section span {
+    font-size: 15px;
+  }
+
+  .employee-status-section {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+
+  .employee-status-section strong {
+    font-size: 12px;
+  }
+
+  .employee-status-section span {
+    font-size: 14px;
+  }
+
+  .employee-details {
+    padding: 15px;
+    margin-top: 10px;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+  }
+
+  .col {
+    flex: 1;
+    padding: 5px;
+  }
+
+  .key-value {
+    display: block;
+    margin-bottom: 10px;
+    text-align: left;
+  }
+
+  .key-value strong {
+    display: block;
+    font-size: 12px;
+  }
+
+  .key-value span {
+    display: block;
+    font-size: 15px;
+  }
+
+  .add-employee-btn {
+    margin-top: 15px;
+  }
+
+  .paginator-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+}
+.toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

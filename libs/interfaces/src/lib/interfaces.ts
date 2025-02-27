@@ -14,9 +14,9 @@ export interface IEmployee extends IBaseEntity {
   address: IAddress;
   epf_no?: string;
   nic: string;
-  employee_id: string;
+  employee_id?: string;
   profile_pic?: string;
-  status: EMPLOYEE_STATUS;
+  status?: EMPLOYEE_STATUS;
   email: string;
   phone: string;
   position: JOB_POSITION;
@@ -117,4 +117,9 @@ export interface chipData {
   value: string;
   placeHolder: string;
   options?: any[];
+}
+
+export interface IDepartmentsKeyValues {
+  _id: string;
+  name: string;
 }

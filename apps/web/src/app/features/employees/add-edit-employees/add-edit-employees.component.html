@@ -1,1 +1,290 @@
-<p>add-edit-employees works!</p>
+<div class="container mt-4 mb-5">
+  <div class="row">
+    <!-- Add Department Form -->
+    <div class="col-md-7">
+      <div class="container">
+        <mat-card class="p-3">
+          <mat-card-title class="text-center mb-3"
+            >Register Employee</mat-card-title
+          >
+          <form [formGroup]="employeeForm" class="mt-4">
+            <div class="row">
+              <div class="col-sm">
+                <mat-form-field class="w-100 mb-3" appearance="outline">
+                  <mat-label>First Name</mat-label>
+                  <input
+                    matInput
+                    formControlName="first_name"
+                    placeholder="Enter first name"
+                  />
+                  <mat-error
+                    *ngIf="
+                      employeeForm.controls.first_name.hasError('required')
+                    "
+                  >
+                    First name is required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-sm">
+                <mat-form-field class="w-100 mb-3" appearance="outline">
+                  <mat-label>Last Name</mat-label>
+                  <input
+                    matInput
+                    formControlName="last_name"
+                    placeholder="Enter last name"
+                  />
+                  <mat-error
+                    *ngIf="employeeForm.controls.last_name.hasError('required')"
+                  >
+                    Last name is required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm">
+                <mat-form-field class="w-100 mb-3" appearance="outline">
+                  <mat-label>no</mat-label>
+                  <input
+                    matInput
+                    formControlName="no"
+                    placeholder="Enter no"
+                  />
+                  <mat-error
+                    *ngIf="employeeForm.controls.no.hasError('required')"
+                  >
+                    no is required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-sm">
+                <mat-form-field class="w-100 mb-3" appearance="outline">
+                  <mat-label>Street 1</mat-label>
+                  <input
+                    matInput
+                    formControlName="street1"
+                    placeholder="Enter street 1"
+                  />
+                  <mat-error
+                    *ngIf="employeeForm.controls.street1.hasError('required')"
+                  >
+                    Street 1 is required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm">
+                <mat-form-field class="w-100 mb-3" appearance="outline">
+                  <mat-label>Street 2</mat-label>
+                  <input
+                    matInput
+                    formControlName="street2"
+                    placeholder="Enter street 2"
+                  />
+                </mat-form-field>
+              </div>
+              <div class="col-sm">
+                <mat-form-field class="w-100 mb-3" appearance="outline">
+                  <mat-label>City</mat-label>
+                  <input
+                    matInput
+                    formControlName="city"
+                    placeholder="Enter city"
+                  />
+                  <mat-error
+                    *ngIf="employeeForm.controls.city.hasError('required')"
+                  >
+                    City is required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm">
+                <mat-form-field class="w-100 mb-3" appearance="outline">
+                  <mat-label>Province</mat-label>
+                  <input
+                    matInput
+                    formControlName="province"
+                    placeholder="Enter province"
+                  />
+                  <mat-error
+                    *ngIf="employeeForm.controls.province.hasError('required')"
+                  >
+                    Province is required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col-sm">
+                <mat-form-field class="w-100 mb-3" appearance="outline">
+                  <mat-label>Country</mat-label>
+                  <input
+                    matInput
+                    formControlName="country"
+                    placeholder="Enter country"
+                  />
+                  <mat-error
+                    *ngIf="employeeForm.controls.country.hasError('required')"
+                  >
+                    Country is required
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+
+            <mat-form-field class="w-100 mb-3" appearance="outline">
+              <mat-label>EPF No</mat-label>
+              <input
+                matInput
+                formControlName="epf_no"
+                placeholder="Enter EPF No"
+              />
+            </mat-form-field>
+
+            <mat-form-field class="w-100 mb-3" appearance="outline">
+              <mat-label>NIC</mat-label>
+              <input matInput formControlName="nic" placeholder="Enter NIC" />
+              <mat-error *ngIf="employeeForm.controls.nic.hasError('required')">
+                NIC is required
+              </mat-error>
+            </mat-form-field>
+
+            <!-- <mat-form-field class="w-100 mb-3" appearance="outline">
+          <mat-label>Employee ID</mat-label>
+          <input
+            matInput
+            formControlName="employee_id"
+            placeholder="Enter employee ID"
+          />
+          <mat-error
+            *ngIf="employeeForm.controls.employee_id.hasError('required')"
+          >
+            Employee ID is required
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="w-100 mb-3" appearance="outline">
+          <mat-label>Status</mat-label>
+          <input matInput formControlName="status" placeholder="Enter status" />
+          <mat-error *ngIf="employeeForm.controls.status.hasError('required')">
+            Status is required
+          </mat-error>
+        </mat-form-field> -->
+
+            <div class="mb-4 d-flex align-items-center">
+              <!-- File Input on the left -->
+              <input
+                type="file"
+                class="form-control me-2"
+                (change)="onFileChange($event)"
+              />
+
+              <!-- Upload button on the right -->
+              <button class="btn btn-primary" (click)="uploadFile()">
+                Upload
+              </button>
+            </div>
+
+            <mat-form-field class="w-100 mb-3" appearance="outline">
+              <mat-label>Email</mat-label>
+              <input
+                matInput
+                formControlName="email"
+                placeholder="Enter email"
+              />
+              <mat-error
+                *ngIf="employeeForm.controls.email.hasError('required')"
+              >
+                Email is required
+              </mat-error>
+              <mat-error *ngIf="employeeForm.controls.email.hasError('email')">
+                Please enter a valid email address
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="w-100 mb-3" appearance="outline">
+              <mat-label>Phone</mat-label>
+              <input
+                matInput
+                formControlName="phone"
+                placeholder="Enter phone number"
+              />
+              <mat-error
+                *ngIf="employeeForm.controls.phone.hasError('required')"
+              >
+                Phone number is required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="w-100 mb-3">
+                <mat-label>Position</mat-label>
+                <mat-select formControlName="position">
+                  @for (position of jobPositions; track position) {
+                    <mat-option [value]="position">{{ position }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+              
+              
+
+            <mat-form-field class="w-100 mb-3" appearance="outline">
+                <mat-label>Department</mat-label>
+                <mat-select formControlName="department_id">
+                  <mat-option *ngFor="let dept of departments" [value]="dept._id">
+                    {{ dept.name }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="employeeForm.controls.department_id.hasError('required')">
+                  Department is required
+                </mat-error>
+              </mat-form-field>
+              
+            <div class="text-end">
+              <button
+                mat-button
+                color="primary"
+                (click)="cancel()"
+                class="me-2"
+              >
+                Cancel
+              </button>
+              <button
+                mat-flat-button
+                color="primary"
+                (click)="onSubmit()"
+                [disabled]="employeeForm.invalid && !this.fileName"
+              >
+                Submit
+              </button>
+            </div>
+          </form>
+        </mat-card>
+      </div>
+    </div>
+    <!-- Help & Support Section -->
+    <div class="col-md-5">
+      <mat-card class="p-3">
+        <mat-card-title>Help & Support</mat-card-title>
+        <mat-card-subtitle>Understanding Employee Management</mat-card-subtitle>
+        <mat-card-content style="padding: 0">
+          <p>
+            A Employee represents a functional unit within an organization. Each
+            Employee has a unique name and belongs to a specific category, such
+            as Engineering, HR, or Finance.
+          </p>
+          <p>
+            If you need assistance, reach out to our support team at
+            <a href="mailto:support@yourcompany.com">{{
+              'support@gmail.com'
+            }}</a
+            >.
+          </p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
