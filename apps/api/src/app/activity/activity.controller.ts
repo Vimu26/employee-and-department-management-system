@@ -15,6 +15,7 @@ import {
 import { ActivityDatabaseService } from './activity.database.service';
 import { CreateActivityDto } from './dto/create-activity.dto';
 import { ActivityLogQueryDto } from './dto/activity.query.dto';
+import { FilterQuery } from 'mongoose';
 
 @Controller('activity-logs')
 export class ActivityLogController {
@@ -33,8 +34,7 @@ export class ActivityLogController {
   async findActivityLogs(
     @Query() query: ActivityLogQueryDto
   ): Promise<CommonResponse<IActivityLog[]>> {
-    const filters: any = {};
-
+    const filters: FilterQuery<ActivityLogQueryDto> = {};
     if (query.parent_id) {
       filters.parent_id = query.parent_id;
     }
@@ -44,8 +44,8 @@ export class ActivityLogController {
     }
 
     const options = {
-      limit: query.limit ?? 10,
-      skip: query.skip ?? 0,
+      limit: query.size ?? 10,
+      skip: query.start ?? 0,
     };
 
     return await this.activityLogDatabaseService.getActivityLogWithUserData(

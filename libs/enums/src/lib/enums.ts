@@ -16,6 +16,7 @@ export enum DB_COLLECTION_NAMES {
   DEPARTMENTS = 'departments',
   ACTIVITY_LOGS = 'activity-logs',
   FILES = 'files',
+  MODEL ='Model'
 }
 
 export enum JOB_POSITION {

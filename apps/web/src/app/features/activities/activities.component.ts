@@ -8,6 +8,7 @@ import {
   IUser,
 } from '@employee-and-department-management-system/interfaces';
 import { PageEvent } from '@angular/material/paginator';
+import { ACTIVITY_ACTIONS } from '@employee-and-department-management-system/enums';
 
 @Component({
   selector: 'app-activities',
@@ -23,6 +24,8 @@ export class ActivitiesComponent implements OnInit {
   totalActivities = 0;
   pageSize = 10;
   pageIndex = 0;
+
+  ACTIVITY_ACTIONS = ACTIVITY_ACTIONS
 
   constructor(private activitiesService: ActivitiesService) {}
 
@@ -90,4 +93,11 @@ export class ActivitiesComponent implements OnInit {
   getActivitiesCount() {
     return this.totalActivities ?? 0;
   }
+
+  // createDescription(activity:IActivityLog){
+  //  console.log(activity)
+  //  if(activity?.parent){
+  //   return `${activity?.parent?.}`
+  //  }
+  // }
 }

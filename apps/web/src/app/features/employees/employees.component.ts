@@ -33,6 +33,8 @@ export class EmployeesComponent implements OnInit {
   pageSize = 10;
   pageIndex = 0;
 
+  EMPLOYEE_STATUS = EMPLOYEE_STATUS
+
   inputFields: chipData[] = [
     {
       label: 'Employee ID',
@@ -182,7 +184,24 @@ export class EmployeesComponent implements OnInit {
     }
   }
 
-  toggleStatus(employee: any, event: any) {
-    employee.status = event.checked ? 'ACTIVE' : 'INACTIVE';
+  toggleStatus(employee: IEmployee, event: any) {
+    const status = event.checked
+      ? EMPLOYEE_STATUS.ACTIVE
+      : EMPLOYEE_STATUS.INACTIVE;
+    const empId = employee?._id?.toString();
+    if (!empId) return;
+    const updatedEmployee = {
+      ...employee,
+      status: status ?? EMPLOYEE_STATUS.ACTIVE,
+    };
+    this.employeeService.updateEmployee(empId, updatedEmployee).subscribe({
+      next: (res) => {
+        this.getAllEmployees();
+        this.snackBar.success('Employee updated successfully!');
+      },
+      error: (err) => {
+        this.snackBar.error('Error updating employee.');
+      },
+    });
   }
 }

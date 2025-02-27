@@ -109,8 +109,6 @@ export class EmployeeController {
       filters['department_id'] = query.department_id;
     }
 
-    console.log('Employee Query Filters:', filters);
-
     const docs =
       await this.employeeDatabaseService.filterPaginatedDocumentsWithCount(
         filters,
