@@ -73,4 +73,78 @@ export class ActivityDatabaseService {
 
     return results;
   }
+
+  async getActivityLogWithUserData(filters: any, limit: number, skip: number) {
+    console.log(filters);
+    const aggregation: PipelineStage[] = [
+      {
+        $match: {
+          ...filters,
+        },
+      },
+      {
+        $addFields: {
+          created_by: { $toObjectId: '$created_by' },
+          parent_id: { $toObjectId: '$parent_id' },
+          last_modified_by: { $toObjectId: '$last_modified_by' },
+        },
+      },
+      {
+        $lookup: {
+          from: DB_COLLECTION_NAMES.USERS,
+          localField: 'created_by',
+          foreignField: '_id',
+          as: 'createdByUser',
+        },
+      },
+      {
+        $unwind: { path: '$createdByUser', preserveNullAndEmptyArrays: true },
+      },
+      {
+        $lookup: {
+          from: DB_COLLECTION_NAMES.EMPLOYEES,
+          localField: 'parent_id',
+          foreignField: '_id',
+          as: 'parent',
+        },
+      },
+      {
+        $unwind: { path: '$parent', preserveNullAndEmptyArrays: true },
+      },
+      {
+        $lookup: {
+          from: DB_COLLECTION_NAMES.USERS,
+          localField: 'last_modified_by',
+          foreignField: '_id',
+          as: 'lastModifiedByUser',
+        },
+      },
+      {
+        $unwind: {
+          path: '$lastModifiedByUser',
+          preserveNullAndEmptyArrays: true,
+        },
+      },
+      {
+        $project: {
+          action: 1,
+          model: 1,
+          created_by: 1,
+          created_on: 1,
+          last_modified_on: 1,
+          createdByUser: 1,
+          parent: 1,
+          lastModifiedByUser: 1,
+        },
+      },
+      {
+        $skip: skip,
+      },
+      {
+        $limit: limit,
+      },
+    ];
+
+    return await this.activityLogsModel.aggregate(aggregation);
+  }
 }

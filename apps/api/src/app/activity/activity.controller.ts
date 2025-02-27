@@ -30,17 +30,22 @@ export class ActivityLogController {
   async findActivityLogs(
     @Query() query: ActivityLogQueryDto
   ): Promise<IActivityLog[]> {
-    const filters = {
-      patent_id: query.parent_id,
-      action: query.action,
-    };
+    const filters: any = {};
+
+    if (query.parent_id) {
+      filters.parent_id = query.parent_id;
+    }
+
+    if (query.action) {
+      filters.action = query.action;
+    }
 
     const options = {
       limit: query.limit ?? 10,
       skip: query.skip ?? 0,
     };
 
-    return this.activityLogDatabaseService.filterLogs(
+    return await this.activityLogDatabaseService.getActivityLogWithUserData(
       filters,
       options.limit,
       options.skip
@@ -48,7 +53,7 @@ export class ActivityLogController {
   }
 
   @Get(':id')
-  async getActivityLog(@Param('id') id: string): Promise<IActivityLog | null> {
+  async getActivityLog(@Param() id: string): Promise<IActivityLog | null> {
     const activityLog = await this.activityLogDatabaseService.findById(id);
 
     if (!activityLog) throw new NotFoundException('ActivityLog not found');
@@ -57,7 +62,7 @@ export class ActivityLogController {
   }
 
   @Delete(':id')
-  async deleteActivityLog(@Param('id') id: string): Promise<void> {
+  async deleteActivityLog(@Param() id: string): Promise<void> {
     const result = await this.activityLogDatabaseService.deleteActivityLog(id);
     if (!result) {
       throw new NotFoundException('ActivityLog not found');
