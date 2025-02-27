@@ -1,0 +1,44 @@
+<div class="welcome-container container">
+  <div
+    class="row justify-content-center vh-100 vw-100"
+    style="margin-top: 10rem"
+  >
+    <div class="col-md-6 col-12">
+      <!-- Card Section -->
+      <mat-card class="welcome-card animate__animated animate__fadeIn">
+        <mat-card-header>
+          <mat-card-title>Welcome Back, {{ name }}</mat-card-title>
+          <mat-card-subtitle>Your dashboard is ready</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>
+            It's great to see you again! Here’s a quick overview of what's new.
+          </p>
+          <div class="welcome-buttons">
+            <button mat-raised-button color="primary" routerLink="/dashboard">
+              Go to Dashboard
+            </button>
+            <button mat-button color="accent" routerLink="/profile">
+              View Profile
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Decorative Elements (Added as an abstract background) -->
+      <div class="welcome-footer text-center mt-4">
+        <div class="decorative-shape">
+          <mat-icon class="emoji-icon animate__animated animate__bounce"
+            >star</mat-icon
+          >
+          <mat-icon class="emoji-icon animate__animated animate__bounce"
+            >celebration</mat-icon
+          >
+        </div>
+        <small class="text-muted">
+          Thanks for being a part of our amazing community.
+        </small>
+      </div>
+    </div>
+  </div>
+</div>
