@@ -8,7 +8,10 @@ import {
   NotFoundException,
   Delete,
 } from '@nestjs/common';
-import { IActivityLog } from '@employee-and-department-management-system/interfaces';
+import {
+  CommonResponse,
+  IActivityLog,
+} from '@employee-and-department-management-system/interfaces';
 import { ActivityDatabaseService } from './activity.database.service';
 import { CreateActivityDto } from './dto/create-activity.dto';
 import { ActivityLogQueryDto } from './dto/activity.query.dto';
@@ -29,7 +32,7 @@ export class ActivityLogController {
   @Get()
   async findActivityLogs(
     @Query() query: ActivityLogQueryDto
-  ): Promise<IActivityLog[]> {
+  ): Promise<CommonResponse<IActivityLog[]>> {
     const filters: any = {};
 
     if (query.parent_id) {

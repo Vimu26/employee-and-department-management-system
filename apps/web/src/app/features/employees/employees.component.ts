@@ -183,7 +183,6 @@ export class EmployeesComponent implements OnInit {
   }
 
   toggleStatus(employee: any, event: any) {
-    // Toggle the status between 'ACTIVE' and 'INACTIVE'
     employee.status = event.checked ? 'ACTIVE' : 'INACTIVE';
   }
 }

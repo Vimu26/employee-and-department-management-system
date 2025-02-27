@@ -35,6 +35,12 @@
         </a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" routerLink="activities">
+          <span *ngIf="!isCollapsed" class="text">Activities</span>
+          <mat-icon class="icon">local_activity</mat-icon>
+        </a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" routerLink="settings">
           <span *ngIf="!isCollapsed" class="text">Settings</span>
           <mat-icon class="icon">settings</mat-icon>

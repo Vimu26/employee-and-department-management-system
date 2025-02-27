@@ -74,8 +74,11 @@ export class ActivityDatabaseService {
     return results;
   }
 
-  async getActivityLogWithUserData(filters: any, limit: number, skip: number) {
-    console.log(filters);
+  async getActivityLogWithUserData(
+    filters: any,
+    limit: number,
+    skip: number
+  ): Promise<{ data: IActivityLog[]; count: number }> {
     const aggregation: PipelineStage[] = [
       {
         $match: {
@@ -126,25 +129,35 @@ export class ActivityDatabaseService {
         },
       },
       {
-        $project: {
-          action: 1,
-          model: 1,
-          created_by: 1,
-          created_on: 1,
-          last_modified_on: 1,
-          createdByUser: 1,
-          parent: 1,
-          lastModifiedByUser: 1,
+        $facet: {
+          data: [
+            {
+              $skip: skip,
+            },
+            {
+              $limit: limit,
+            },
+          ],
+          count: [
+            {
+              $count: 'totalCount',
+            },
+          ],
         },
       },
       {
-        $skip: skip,
-      },
-      {
-        $limit: limit,
+        $project: {
+          data: 1,
+          count: { $arrayElemAt: ['$count.totalCount', 0] }, // Access the total count
+        },
       },
     ];
 
-    return await this.activityLogsModel.aggregate(aggregation);
+    const result = await this.activityLogsModel.aggregate(aggregation);
+
+    return {
+      data: result[0].data, // The activity log data
+      count: result[0].count || 0, // The total count of activity logs
+    };
   }
 }

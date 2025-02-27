@@ -1,1 +1,66 @@
-<p>activities works!</p>
+<div class="container mt-4 activities-container" style="padding: 2rem">
+  <mat-accordion multi>
+    <mat-expansion-panel
+      *ngFor="let activity of getActivities(); let i = index"
+    >
+      <mat-expansion-panel-header class="header container">
+        <div class="header-grid">
+          <div class="activity-action">
+            <strong>Schema</strong>
+            <span>{{ activity.model }}</span>
+          </div>
+
+          <div class="activity-action">
+            <strong>Action</strong>
+            <span>{{ activity.action }}</span>
+          </div>
+        </div>
+      </mat-expansion-panel-header>
+
+      <div class="activity-details">
+        <div class="row">
+          <div class="col">
+            <div class="key-value">
+              <strong>Created By</strong>
+              <span>{{ getCreatedName(activity) }}</span>
+            </div>
+          </div>
+          <div class="col">
+            <div class="key-value">
+              <strong>Created Date</strong>
+              <span>{{ activity.created_on | date : 'short' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Last Modified Section -->
+        <div
+          class="last-modified"
+          *ngIf="activity.last_modified_on && activity.last_modified_by"
+        >
+          <mat-divider></mat-divider>
+          <div class="activity-details">
+            <div class="key-value">
+              <strong>Last Updated By</strong>
+              <span>{{ getLastModifiedName(activity) }}</span>
+            </div>
+            <div class="key-value">
+              <strong>Last Updated On</strong>
+              <span>{{ activity.last_modified_on | date : 'short' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+
+  <div class="paginator-container">
+    <mat-paginator
+      [length]="getActivitiesCount()"
+      [pageSize]="10"
+      [pageSizeOptions]="[10, 20, 50]"
+      (page)="onPageChange($event)"
+    >
+    </mat-paginator>
+  </div>
+</div>

@@ -52,6 +52,9 @@ export interface IActivityLog extends IBaseEntity {
   parent_id?: Types.ObjectId | string;
   action?: ACTIVITY_ACTIONS;
   model?: DB_COLLECTION_NAMES;
+  lastModifiedByUser?: IUser;
+  createdByUser?: IUser;
+  parent?: any;
 }
 
 export type IOptionalActivityLogs = Partial<IActivityLog>;
