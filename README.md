@@ -1,7 +1,8 @@
 # EmployeeAndDepartmentManagementSystem
 
-User Manual 
-https://docs.google.com/document/d/1aNwYvI0vOUhXMl74eJNu36aRnbqRjFzV03rlEj2yKK4/edit?usp=sharing
+User Manual - https://docs.google.com/document/d/1aNwYvI0vOUhXMl74eJNu36aRnbqRjFzV03rlEj2yKK4/edit?usp=sharing
+
+Demo Link - https://drive.google.com/file/d/1lm-NQQcLtsNjJ58lDipGkwOK9pPvHyyW/view?usp=drive_link
 
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
 
